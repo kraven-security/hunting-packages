@@ -9,6 +9,6 @@ A collection of open-source threat intelligence articles with their indicators (
 A collection of scripts that target various security tool. These are designed to make the indicators included in open-source threat intelligence articles easy to operationalize. 
 
 Scripts includes:
-`verify-iocs-vt.py`: Verify IOCs using VirusTotal Community API.
+- `verify-iocs-vt.py`: Verify IOCs using VirusTotal Community API.
 - `iocs-to-cs.py`: Upload IOCs to CrowdStrike Falcon IOC Management for detection and blocking. 
 - ...
