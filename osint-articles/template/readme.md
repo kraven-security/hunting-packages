@@ -14,6 +14,7 @@
 
 > [!NOTE]
 > Use the following scripts in [threat-hunting-scripts](../../threat-hunting-scripts/) to help you hunt: 
+> `verify-iocs-vt.py`: Verify IOCs using VirusTotal Community API.
 > - `iocs-to-cs.py`: Upload IOCs to CrowdStrike Falcon IOC Management for detection and blocking. 
 > - ...
 
