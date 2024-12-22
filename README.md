@@ -1,1 +1,1 @@
-# hunting-packages
+# Threat Hunting Packages
