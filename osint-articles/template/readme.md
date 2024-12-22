@@ -10,6 +10,8 @@
 - `<yara-rule>.yar`: YARA rule(s) to detect or hunt for malware described in the article.
 - *`other`*: Other detection or threat hunting opporutnities.
 
+<br>
+
 > [!NOTE]
 > Use the following scripts in [threat-hunting-scripts](../../threat-hunting-scripts/) to help you hunt: 
 > - `iocs-to-cs.py`: Upload IOCs to CrowdStrike Falcon IOC Management for detection and blocking. 
