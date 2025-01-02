@@ -21,8 +21,8 @@ Key takeaways:
 ## Package Content
 
 - `iocs.txt`: List of all Indicators of Compromise (IOCs) in the article.
-- `ip.txt`: List of endpoint IOCs in the article.
-- `domains.txt`: List of network IOCs in the article.
+- `ip.txt`: List of malicious IP addresses in the article.
+- `domains.txt`: List of malicious domains in the article.
 - `chrome-extension-ids.txt`: List of malicious Chrome extentions based on their IDs.
 
 <br>
