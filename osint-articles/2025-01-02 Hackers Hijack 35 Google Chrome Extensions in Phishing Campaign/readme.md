@@ -2,7 +2,7 @@
 
 Hackers have compromised 35 Google Chrome extensions by exploiting a phishing campaign against developers, injecting data-stealing code into extensions used by over 2.6 million people. Immediate checks and updates are advised.
 
-🔍 Threat Hunting Package:
+🔍 Threat Hunting Package: https://github.com/kraven-security/hunting-packages/tree/main/osint-articles/2025-01-02%20Hackers%20Hijack%2035%20Google%20Chrome%20Extensions%20in%20Phishing%20Campaign
 
 Key takeaways:
 
@@ -29,6 +29,6 @@ Key takeaways:
 
 > [!NOTE]
 > Use the following scripts in [threat-hunting-scripts](../../threat-hunting-scripts/) to help you hunt:
-> `verify-iocs-vt.py`: Verify IOCs using VirusTotal Community API.
 >
+> - `verify-iocs-vt.py`: Verify IOCs using VirusTotal Community API.
 > - `iocs-to-cs.py`: Upload IOCs to CrowdStrike Falcon IOC Management for detection and blocking.
