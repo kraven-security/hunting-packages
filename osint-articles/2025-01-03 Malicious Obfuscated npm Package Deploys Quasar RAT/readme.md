@@ -2,8 +2,6 @@
 
 A malicious npm package, 'ethereumvulncontracthandler', has been found deploying the Quasar RAT on Windows systems. Disguised as an Ethereum tool, it's been downloaded 66 times, with its obfuscated code making detection challenging.
 
-🎯 Threat Hunting Package:
-
 Key takeaways:
 
 📦 Malicious npm Package: The package named 'ethereumvulncontracthandler' was uploaded by user "solidit-dev-416" to npm, appearing as a legitimate Ethereum-related tool.
