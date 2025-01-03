@@ -1,0 +1,13 @@
+T1195.002 — Supply Chain Compromise: Compromise Software Supply Chain
+T1059.007 — Command and Scripting Interpreter: JavaScript
+T1036.005 — Masquerading: Match Legitimate Name or Location
+T1027 — Obfuscated Files or Information
+T1059.001 — Command and Scripting Interpreter: PowerShell
+T1546.016 — Event Triggered Execution: Installer Packages
+T1105 — Ingress Tool Transfer
+T1547.001 — Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder
+T1056.001 — Input Capture: Keylogging
+T1113 — Screen Capture
+T1005 — Data from Local System
+T1071.001 — Application Layer Protocol: Web Protocols
+T1041 — Exfiltration Over C2 Channel
