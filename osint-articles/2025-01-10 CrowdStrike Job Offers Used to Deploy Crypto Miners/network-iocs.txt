@@ -1,0 +1,5 @@
+cscrm-hiring.com
+https://cscrm-hiring.com/cs-applicant-crm-installer.zip
+93.115.172.41
+http://93.115.172.41/private/aW5zdHJ1Y3Rpb25zCg==.txt
+93.115.172.41:1300

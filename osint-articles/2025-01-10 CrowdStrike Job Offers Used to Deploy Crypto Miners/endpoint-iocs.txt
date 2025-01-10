@@ -1,0 +1,10 @@
+96558bd6be9bcd8d25aed03b996db893ed7563cf10304dffe6423905772bbfa1
+62f3a21db99bcd45371ca4845c7296af81ce3ff6f0adcaee3f1698317dd4898b
+7c370211602fcb54bc988c40feeb3c45ce249a8ac5f063b2eb5410a42adcc030
+%TEMP%\System\temp.zip
+%TEMP%\System\process.exe
+%LOCALAPPDATA%\System32\config.exe
+%LOCALAPPDATA%\System32\process.exe
+%APPDATA%\Microsoft\Windows\Start Menu\Programs\Maintenance\info.txt
+%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\startup.bat
+HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run\config
