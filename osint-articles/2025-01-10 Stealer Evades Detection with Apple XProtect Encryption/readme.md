@@ -21,8 +21,7 @@ Key takeaways:
 - `iocs.txt`: List of all Indicators of Compromise (IOCs) in the article.
 - `endpoint-iocs.txt`: List of endpoint IOCs in the article.
 - `network-iocs.txt`: List of network IOCs in the article.
-- `FireScam_Malware_Indicators.yar`: YARA rule to detect or hunt for malware described in the article.
-- `mitre-attack-ttps.txt`: List of MITRE ATT&CK techniques observed.
+- `banshee_macos_binary.yar`: YARA rule to detect or hunt for malware described in the article.
 
 <br>
 
