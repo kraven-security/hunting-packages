@@ -1,0 +1,5 @@
+45.159.223.177
+radium.lol
+http://radium.lol:42069/v2/3e728hd782dbyu12veyu2gd872fdg235jgg432fg/0/getupdates 
+45.159.223.177:6969
+pycord-self
