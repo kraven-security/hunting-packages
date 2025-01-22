@@ -21,7 +21,6 @@ Key takeaways:
 - `iocs.txt`: List of all Indicators of Compromise (IOCs) in the article.
 - `endpoint-iocs.txt`: List of endpoint IOCs in the article - hashes, registry keys, and filepaths.
 - `network-iocs.txt`: List of network IOCs in the article - IP addresses and email addresses.
-- `mitre-attack-ttps.txt`: List of MITRE ATT&CK techniques observed.
 
 <br>
 
