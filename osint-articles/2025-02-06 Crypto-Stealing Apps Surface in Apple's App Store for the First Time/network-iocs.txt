@@ -1,0 +1,9 @@
+https://gitlab.com/group6815923/ai/-/raw/main/rel.json
+https://gitlab.com/group6815923/kz/-/raw/main/rel.json
+api.firebaseo.com
+api.aliyung.com
+api.aliyung.org
+uploads.99ai.world
+socket.99ai.world
+api.googleapps.top
+https://dmbucket102.s3.ap-northeast-1.amazonaws.com
