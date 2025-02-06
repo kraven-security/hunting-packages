@@ -1,0 +1,32 @@
+Email Subjects: 
+- Important Update <user@organization.com> 
+- Action Required 
+- Important Update 
+- Action Required: Important update 
+- Must Read 
+- Frontline Direct Deposit 
+Phishing Link URL Patterns: 
+- /&adfs/ls/client-request-id=7c724 
+- /adfs/ls/client-request-id=7c724 
+Body or subject contains: 
+- "elpdes"  
+- "hish"  
+- "click" 
+- "depo" 
+- "alert" 
+Sender contains: 
+- "otifica" 
+- "elpdes" 
+- "orkda" 
+- "ayrol" 
+- "norepl" 
+149.40.50.56 
+149.40.50.46 
+149.40.50.27 
+149.40.50.34 
+149.40.50.15 
+149.40.50.11 
+149.40.50.36 
+84.239.45.1 
+84.239.45.12 
+84.239.45.8
