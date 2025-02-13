@@ -1,0 +1,53 @@
+DeviceProcessEvents
+   | where InitiatingProcessParentFileName endswith "ScreenConnect.ClientService.exe"
+   | where (FileName in~ ("powershell.exe", "powershell_ise.exe", "cmd.exe") and
+            ProcessCommandLine has_any ("System.DirectoryServices.ActiveDirectory.Domain", "hidden -encodedcommand", "export-registry", "compress-archive", "wget -uri", "curl -Uri", "curl -sko", "ipconfig /all", "& start /B", "start msiexec /q /i", "whoami", "net user", "net group", "localgroup administrators", "dsquery", "samaccountname=", "query session", "adscredentials", "o365accountconfiguration", "-dumpmode", "-ssh", "o           or (FileName =~ "wget.exe" and ProcessCommandLine contains "http")
+           or (FileName =~ "mshta.exe" and ProcessCommandLine contains "http")
+           or (FileName =~ "curl.exe" and ProcessCommandLine contains "http")
+           or ProcessCommandLine has_all ("powershell", "-command", "curl")
+           or ProcessCommandLine has_any ("E:jscript", "e:vbscript", "start msiexec /q /i")
+           or ProcessCommandLine has_all ("reg add", "DisableAntiSpyware", @"\Microsoft\Windows Defender")
+           or ProcessCommandLine has_all ("reg add", "DisableRestrictedAdmin", @"CurrentControlSet\Control\Lsa")
+           or ProcessCommandLine has_all ("vssadmin", "delete", "shadows")
+           or ProcessCommandLine has_all ("vssadmin", "list", "shadows")
+           or ProcessCommandLine has_all ("wmic", "process call create")
+           or ProcessCommandLine has_all ("wmic", "delete", "shadowcopy")
+           or ProcessCommandLine has_all ("wmic", "shadowcopy", "call create")
+           or ProcessCommandLine has_all ("wbadmin", "delete", "catalog")
+           or ProcessCommandLine has_all ("ntdsutil", "create full")
+           or (ProcessCommandLine has_all ("schtasks", "/create") and not(ProcessCommandLine has "shutdown"))
+           or (ProcessCommandLine has "nltest" and ProcessCommandLine has_any ("domain_trusts", "dclist", "all_trusts"))
+           or (ProcessCommandLine has "lsass" and ProcessCommandLine has_any ("procdump", "tasklist", "findstr"))
+           or FileName in~ ("tasklist.exe", "ssh.exe", "icacls.exe", "certutil.exe", "calc.exe", "bitsadmin.exe", "accesschk.exe", "mshta.exe",
+                                      "winrm.exe", "dsquery.exe", "makecab.exe", "hh.exe", "pcalua.exe", "regsvr32.exe",
+                                      "cmstp.exe", "esentutl.exe", "dnscmd.exe", "gpscript.exe", "msdt.exe", "msra.exe", "odbcconf.exe")
+   | where not(ProcessCommandLine has_any ("servicedesk.atera.com", "support.csolve.net", "lt.tech-keys.com", "certutil  -hashfile"))
+
+DeviceFileEvents
+| where FileName contains @"C:\Program Files (x86)\Fortinet\FortiClientEMS\logs"
+| distinct DeviceName
+
+DeviceProcessEvents
+| where InitiatingProcessFileName == "sqlservr.exe"
+| where FileName =~ "cmd.exe"
+| where ProcessCommandLine has_any ("webclient", "downloadstring", "http", "https", "downloadfile")
+| where InitiatingProcessCommandLine has_all ("sqlservr.exe", "-sFCEMS")
+
+DeviceEvents
+| where ActionType == 'ServiceInstalled'
+| extend JSON = parse_json(AdditionalFields)
+| where JSON.ServiceName has 'tor'
+
+let lookback = 30d;
+let ioc_ip_addr = dynamic(["103.201.129.130", "104.160.6.2", "195.26.87.209"]);
+let ioc_domains = dynamic(["hwupdates.com", "cloud-sync.org"]);
+_Im_NetworkSession(starttime=todatetime(ago(lookback)), endtime=now())
+| where DstIpAddr in (ioc_ip_addr) or DstDomain has_any (ioc_domains)
+| summarize imNWS_mintime=min(TimeGenerated), imNWS_maxtime=max(TimeGenerated), EventCount=count() by SrcIpAddr, DstIpAddr, DstDomain, Dvc, EventProduct, EventVendor 
+
+let lookback = 30d;
+let ioc_ip_addr = dynamic(["103.201.129.130", "104.160.6.2", "195.26.87.209"]);
+let ioc_url_patterns = dynamic(["hwupdates.com", "cloud-sync.org","def.aspx"]);
+_Im_WebSessionn(starttime=todatetime(ago(lookback)), endtime=now())
+| where url has_any (ioc_url_patterns) or DstIpAddr has_any (ioc_ip_addr)
+ | summarize imWS_mintime=min(TimeGenerated), imWS_maxtime=max(TimeGenerated), EventCount=count() by SrcIpAddr, DstIpAddr, Url, Dvc, EventProduct, EventVendor  
