@@ -1,53 +1,44 @@
-DeviceProcessEvents
-   | where InitiatingProcessParentFileName endswith "ScreenConnect.ClientService.exe"
-   | where (FileName in~ ("powershell.exe", "powershell_ise.exe", "cmd.exe") and
-            ProcessCommandLine has_any ("System.DirectoryServices.ActiveDirectory.Domain", "hidden -encodedcommand", "export-registry", "compress-archive", "wget -uri", "curl -Uri", "curl -sko", "ipconfig /all", "& start /B", "start msiexec /q /i", "whoami", "net user", "net group", "localgroup administrators", "dsquery", "samaccountname=", "query session", "adscredentials", "o365accountconfiguration", "-dumpmode", "-ssh", "o           or (FileName =~ "wget.exe" and ProcessCommandLine contains "http")
-           or (FileName =~ "mshta.exe" and ProcessCommandLine contains "http")
-           or (FileName =~ "curl.exe" and ProcessCommandLine contains "http")
-           or ProcessCommandLine has_all ("powershell", "-command", "curl")
-           or ProcessCommandLine has_any ("E:jscript", "e:vbscript", "start msiexec /q /i")
-           or ProcessCommandLine has_all ("reg add", "DisableAntiSpyware", @"\Microsoft\Windows Defender")
-           or ProcessCommandLine has_all ("reg add", "DisableRestrictedAdmin", @"CurrentControlSet\Control\Lsa")
-           or ProcessCommandLine has_all ("vssadmin", "delete", "shadows")
-           or ProcessCommandLine has_all ("vssadmin", "list", "shadows")
-           or ProcessCommandLine has_all ("wmic", "process call create")
-           or ProcessCommandLine has_all ("wmic", "delete", "shadowcopy")
-           or ProcessCommandLine has_all ("wmic", "shadowcopy", "call create")
-           or ProcessCommandLine has_all ("wbadmin", "delete", "catalog")
-           or ProcessCommandLine has_all ("ntdsutil", "create full")
-           or (ProcessCommandLine has_all ("schtasks", "/create") and not(ProcessCommandLine has "shutdown"))
-           or (ProcessCommandLine has "nltest" and ProcessCommandLine has_any ("domain_trusts", "dclist", "all_trusts"))
-           or (ProcessCommandLine has "lsass" and ProcessCommandLine has_any ("procdump", "tasklist", "findstr"))
-           or FileName in~ ("tasklist.exe", "ssh.exe", "icacls.exe", "certutil.exe", "calc.exe", "bitsadmin.exe", "accesschk.exe", "mshta.exe",
-                                      "winrm.exe", "dsquery.exe", "makecab.exe", "hh.exe", "pcalua.exe", "regsvr32.exe",
-                                      "cmstp.exe", "esentutl.exe", "dnscmd.exe", "gpscript.exe", "msdt.exe", "msra.exe", "odbcconf.exe")
-   | where not(ProcessCommandLine has_any ("servicedesk.atera.com", "support.csolve.net", "lt.tech-keys.com", "certutil  -hashfile"))
+// Possible device code phishing attempts
+let suspiciousUserClicks = materialize(UrlClickEvents
+    | where ActionType in ("ClickAllowed", "UrlScanInProgress", "UrlErrorPage") or IsClickedThrough != "0"
+    | where UrlChain has_any ("microsoft.com/devicelogin", "login.microsoftonline.com/common/oauth2/deviceauth")
+    | extend AccountUpn = tolower(AccountUpn)
+    | project ClickTime = Timestamp, ActionType, UrlChain, NetworkMessageId, Url, AccountUpn);
 
-DeviceFileEvents
-| where FileName contains @"C:\Program Files (x86)\Fortinet\FortiClientEMS\logs"
-| distinct DeviceName
+//Check for Risky Sign-In in the short time window
+let interestedUsersUpn = suspiciousUserClicks
+    | where isnotempty(AccountUpn)
+    | distinct AccountUpn;
+let suspiciousSignIns = materialize(AADSignInEventsBeta
+    | where ErrorCode == 0
+    | where AccountUpn in~ (interestedUsersUpn)
+    | where RiskLevelDuringSignIn in (10, 50, 100)
+    | extend AccountUpn = tolower(AccountUpn)
+    | join kind=inner suspiciousUserClicks on AccountUpn
+    | where (Timestamp - ClickTime) between (-2min .. 7min)
+    | project Timestamp, ReportId, ClickTime, AccountUpn, RiskLevelDuringSignIn, SessionId, IPAddress, Url
+);
 
-DeviceProcessEvents
-| where InitiatingProcessFileName == "sqlservr.exe"
-| where FileName =~ "cmd.exe"
-| where ProcessCommandLine has_any ("webclient", "downloadstring", "http", "https", "downloadfile")
-| where InitiatingProcessCommandLine has_all ("sqlservr.exe", "-sFCEMS")
+//Validate errorCode 50199 followed by success in 5 minute time interval for the interested user, which suggests a pause to input the code from the phishing email
+let interestedSessionUsers = suspiciousSignIns
+    | where isnotempty(AccountUpn)
+    | distinct AccountUpn;
+let shortIntervalSignInAttemptUsers = materialize(AADSignInEventsBeta
+    | where AccountUpn in~ (interestedSessionUsers)
+    | where ErrorCode in (0, 50199)
+    | summarize ErrorCodes = make_set(ErrorCode) by AccountUpn, CorrelationId, SessionId
+    | where ErrorCodes has_all (0, 50199)
+    | distinct AccountUpn);
+suspiciousSignIns
+| where AccountUpn in (shortIntervalSignInAttemptUsers)
 
-DeviceEvents
-| where ActionType == 'ServiceInstalled'
-| extend JSON = parse_json(AdditionalFields)
-| where JSON.ServiceName has 'tor'
-
-let lookback = 30d;
-let ioc_ip_addr = dynamic(["103.201.129.130", "104.160.6.2", "195.26.87.209"]);
-let ioc_domains = dynamic(["hwupdates.com", "cloud-sync.org"]);
-_Im_NetworkSession(starttime=todatetime(ago(lookback)), endtime=now())
-| where DstIpAddr in (ioc_ip_addr) or DstDomain has_any (ioc_domains)
-| summarize imNWS_mintime=min(TimeGenerated), imNWS_maxtime=max(TimeGenerated), EventCount=count() by SrcIpAddr, DstIpAddr, DstDomain, Dvc, EventProduct, EventVendor 
-
-let lookback = 30d;
-let ioc_ip_addr = dynamic(["103.201.129.130", "104.160.6.2", "195.26.87.209"]);
-let ioc_url_patterns = dynamic(["hwupdates.com", "cloud-sync.org","def.aspx"]);
-_Im_WebSessionn(starttime=todatetime(ago(lookback)), endtime=now())
-| where url has_any (ioc_url_patterns) or DstIpAddr has_any (ioc_ip_addr)
- | summarize imWS_mintime=min(TimeGenerated), imWS_maxtime=max(TimeGenerated), EventCount=count() by SrcIpAddr, DstIpAddr, Url, Dvc, EventProduct, EventVendor  
+// Query from public research surfaces newly registered devices
+CloudAppEvents
+| where AccountDisplayName == "Device Registration Service"
+| extend ApplicationId_ = tostring(ActivityObjects[0].ApplicationId)
+| extend ServiceName_ = tostring(ActivityObjects[0].Name)
+| extend DeviceName = tostring(parse_json(tostring(RawEventData.ModifiedProperties))[1].NewValue)
+| extend DeviceId = tostring(parse_json(tostring(parse_json(tostring(RawEventData.ModifiedProperties))[6].NewValue))[0])
+| extend DeviceObjectId_ = tostring(parse_json(tostring(RawEventData.ModifiedProperties))[0].NewValue)
+| extend UserPrincipalName = tostring(RawEventData.ObjectId)
+| project TimeGenerated, ServiceName_, DeviceName, DeviceId, DeviceObjectId_, UserPrincipalName

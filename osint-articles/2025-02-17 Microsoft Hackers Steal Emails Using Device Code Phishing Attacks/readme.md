@@ -1,28 +1,24 @@
-# BadPilot Network Hacking Fuels Russian Sandworm's Global Cyber Attacks
+# Microsoft: Hackers Steal Emails Using Device Code Phishing Attacks
 
-Microsoft has uncovered BadPilot, a subgroup of the notorious Russian Sandworm hacking group, engaging in a widespread campaign exploiting eight security flaws to infiltrate critical sectors worldwide, including energy and telecommunications.
+Microsoft has identified a new phishing tactic where hackers use device code phishing to hijack Microsoft 365 accounts, steal emails, and gain access to cloud services. This attack is attributed to Storm-2372, potentially linked to Russian interests.
 
 Key takeaways:
 
-😈 Russian Cyber Threat: BadPilot, a part of Sandworm (also known as APT44), is behind a sophisticated cyber espionage operation.
+🔓 Device Code Phishing: Hackers trick users into authenticating with a device code, granting access to their Microsoft 365 accounts.
 
-🔓 Exploited Vulnerabilities: Eight different security flaws are used to gain initial access to networks globally.
+📧 Email Theft: This method allows attackers to read emails and infiltrate corporate networks without passwords.
 
-🌐 Global Targets: The campaign targets critical infrastructure in over 15 countries, focusing on energy, oil and gas, and government entities.
+🇷🇺 Suspected Russian Link: Microsoft suggests medium confidence that Storm-2372 aligns with Russian state interests.
 
-🕵️ Persistent Access: The aim is to maintain long-term access for espionage and potential future attacks.
+🛡️ Mitigation: Microsoft recommends blocking device code flow where possible and enforcing Conditional Access policies.
 
-⚠️ Urgent Need for Vigilance: Organizations are advised to patch known vulnerabilities and strengthen network defenses.
+🚨 Active Campaign: The threat targets individuals in organizations of interest, emphasizing the need for vigilance.
 
-🔗 https://buff.ly/4b0yKKL
+🔗 https://buff.ly/3Qn490u
 
 ## Package Content
 
-- `iocs.txt`: List of all Indicators of Compromise (IOCs) in the article.
-- `endpoint-iocs.txt`: List of endpoint IOCs in the article.
-- `network-iocs.txt`: List of network IOCs in the article.
 - `kql-queries.txt`: List of KQL detection queries in the article.
-- `yara.yar`: YARA detection rule in the article.
 
 <br>
 
