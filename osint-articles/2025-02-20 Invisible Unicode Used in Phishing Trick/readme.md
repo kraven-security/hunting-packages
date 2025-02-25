@@ -1,4 +1,4 @@
-# Cyber Security Analyst Warns of Invisible Unicode Phishing Trick
+# Invisible Unicode Used in Phishing Trick
 
 Beware of a sneaky phishing attack using invisible Unicode to hide malicious JavaScript, tricking users into running harmful code. Stay vigilant and verify suspicious emails or links before interacting!
 
