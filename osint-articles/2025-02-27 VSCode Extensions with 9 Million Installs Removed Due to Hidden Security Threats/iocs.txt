@@ -1,0 +1,5 @@
+equinusocio.moxer-theme
+equinusocio.vsc-material-theme
+equinusocio.vsc-material-theme-icons
+equinusocio.vsc-community-material-theme
+equinusocio.moxer-icons
