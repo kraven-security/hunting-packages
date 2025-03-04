@@ -2,8 +2,6 @@
 
 A new Linux backdoor, Auto-Color, is hitting North American governments and universities with stealthy attacks, dodging detection while enabling remote control. Spotted between Nov-Dec 2024, this modular threat is a wake-up call for Linux system security!
 
-🎯 Threat Hunting Package:
-
 Key takeaways:
 
 🕵️‍♂️ New Threat Emerges: A previously unseen Linux backdoor named Auto-Color was observed targeting North American government and university systems in attacks from November to December 2024.
