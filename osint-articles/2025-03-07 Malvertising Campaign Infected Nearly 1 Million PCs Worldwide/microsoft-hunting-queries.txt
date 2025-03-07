@@ -1,0 +1,172 @@
+let specificSerialNumbers = dynamic(["70093af339876742820d7941", "15042512e67e8275f3f7f36b", "5608cab7e2ce34d53abcbb73",
+ "0fa27d2553f24da79d1cc6bd8773ee9a", "7a7bf2ae0cbc0f5500db2946", "30d6c83a715bddb32e7956fe52d6b352",
+  "301385aa36fae635e74bb88e", "30013cbbb16a7fd3c57f82707fb99c32", "5d00264a6b804ae6b28d9b16",
+   "3a9c76f8304f77bd271921d9982f1ab6", "01f2c6c363767056abd80e9c", "0b09c88c0c8d15bed51a9eb4440f4bb0"]); 
+union
+(
+    DeviceFileCertificateInfo
+    | where CertificateSerialNumber in (specificSerialNumbers)
+    | project DeviceName, CertificateSerialNumber, Signer, SHA1, IsSigned, Issuer, Timestamp
+),
+(
+    DeviceTvmCertificateInfo
+    | where SerialNumber in (specificSerialNumbers)
+    | project DeviceId, SerialNumber, SignatureAlgorithm, Thumbprint, Path, IssueDate, ExpirationDate
+)
+
+let specificSerialNumbers = dynamic(["7a7bf2ae0cbc0f5500db2946"]); 
+union
+(
+    DeviceFileCertificateInfo
+    | where CertificateSerialNumber in (specificSerialNumbers)
+    | project DeviceName, CertificateSerialNumber, Signer, SHA1, IsSigned, Issuer, Timestamp
+),
+(
+    DeviceTvmCertificateInfo
+    | where SerialNumber in (specificSerialNumbers)
+    | project DeviceId, SerialNumber, SignatureAlgorithm, Thumbprint, Path, IssueDate, ExpirationDate
+)
+
+let ipAddressToSearch = dynamic(["159.100.18.192", "192.142.10.246", "79.133.46.35", "84.200.24.191", "84.200.24.26", "89.187.28.253", "185.92.181.1"]);
+union isfuzzy=true
+(
+    AzureDiagnostics
+    | where identity_claim_ipaddr_s == ipAddressToSearch or conditions_sourceIP_s == ipAddressToSearch or CallerIPAddress == ipAddressToSearch or clientIP_s == ipAddressToSearch or clientIp_s == ipAddressToSearch or primaryIPv4Address_s == ipAddressToSearch or conditions_destinationIP_s == ipAddressToSearch
+    | project Timestamp = TimeGenerated, Table = "AzureDiagnostics", IPAddress = coalesce(identity_claim_ipaddr_s, conditions_sourceIP_s, CallerIPAddress, clientIP_s, clientIp_s, primaryIPv4Address_s, conditions_destinationIP_s), AdditionalInfo = tostring(AdditionalFields)
+),
+(
+    IdentityQueryEvents
+    | where IPAddress == ipAddressToSearch or DestinationIPAddress == ipAddressToSearch
+    | project Timestamp, Table = "IdentityQueryEvents", IPAddress = coalesce(IPAddress, DestinationIPAddress), AdditionalInfo = Query
+),
+(
+    AADSignInEventsBeta
+    | where IPAddress == ipAddressToSearch
+    | project Timestamp, Table = "AADSignInEventsBeta", IPAddress, AdditionalInfo = UserAgent
+),
+(
+    Heartbeat
+    | where ComputerIP == ipAddressToSearch
+    | project Timestamp = TimeGenerated, Table = "Heartbeat", IPAddress = ComputerIP, AdditionalInfo = OSName
+),
+(
+    CloudAppEvents
+    | where IPAddress == ipAddressToSearch
+    | project Timestamp, Table = "CloudAppEvents", IPAddress, AdditionalInfo = UserAgent
+),
+(
+    DeviceNetworkEvents
+    | where LocalIP == ipAddressToSearch or RemoteIP == ipAddressToSearch
+    | project Timestamp, Table = "DeviceNetworkEvents", IPAddress = coalesce(LocalIP, RemoteIP), AdditionalInfo = InitiatingProcessCommandLine
+),
+(
+    AADUserRiskEvents
+    | where IpAddress == ipAddressToSearch
+    | project Timestamp = TimeGenerated, Table = "AADUserRiskEvents", IPAddress = IpAddress, AdditionalInfo = RiskEventType
+),
+(
+    AADNonInteractiveUserSignInLogs
+    | where IPAddress == ipAddressToSearch
+    | project Timestamp = TimeGenerated, Table = "AADNonInteractiveUserSignInLogs", IPAddress, AdditionalInfo = UserAgent
+),
+(
+    MicrosoftAzureBastionAuditLogs
+    | where TargetVMIPAddress == ipAddressToSearch or ClientIpAddress == ipAddressToSearch
+    | project Timestamp = TimeGenerated, Table = "MicrosoftAzureBastionAuditLogs", IPAddress = coalesce(TargetVMIPAddress, ClientIpAddress), AdditionalInfo = UserAgent
+)
+| sort by Timestamp desc
+
+let ipAddressToSearch = dynamic(["45.141.84.60", "91.202.233.18", "154.216.20.131", "5.10.250.240", "79.132.128.77"]);
+union isfuzzy=true
+(
+    AzureDiagnostics
+    | where identity_claim_ipaddr_s == ipAddressToSearch or conditions_sourceIP_s == ipAddressToSearch or CallerIPAddress == ipAddressToSearch or clientIP_s == ipAddressToSearch or clientIp_s == ipAddressToSearch or primaryIPv4Address_s == ipAddressToSearch or conditions_destinationIP_s == ipAddressToSearch
+    | project Timestamp = TimeGenerated, Table = "AzureDiagnostics", IPAddress = coalesce(identity_claim_ipaddr_s, conditions_sourceIP_s, CallerIPAddress, clientIP_s, clientIp_s, primaryIPv4Address_s, o),
+(
+    IdentityQueryEvents
+    | where IPAddress == ipAddressToSearch or DestinationIPAddress == ipAddressToSearch
+    | project Timestamp, Table = "IdentityQueryEvents", IPAddress = coalesce(IPAddress, DestinationIPAddress), AdditionalInfo = Query
+),
+(
+    AADSignInEventsBeta
+    | where IPAddress == ipAddressToSearch
+    | project Timestamp, Table = "AADSignInEventsBeta", IPAddress, AdditionalInfo = UserAgent
+),
+(
+    Heartbeat
+    | where ComputerIP == ipAddressToSearch
+    | project Timestamp = TimeGenerated, Table = "Heartbeat", IPAddress = ComputerIP, AdditionalInfo = OSName
+),
+(
+    CloudAppEvents
+    | where IPAddress == ipAddressToSearch
+    | project Timestamp, Table = "CloudAppEvents", IPAddress, AdditionalInfo = UserAgent
+),
+(
+    DeviceNetworkEvents
+    | where LocalIP == ipAddressToSearch or RemoteIP == ipAddressToSearch
+    | project Timestamp, Table = "DeviceNetworkEvents", IPAddress = coalesce(LocalIP, RemoteIP), AdditionalInfo = InitiatingProcessCommandLine
+),
+(
+    AADUserRiskEvents
+    | where IpAddress == ipAddressToSearch
+    | project Timestamp = TimeGenerated, Table = "AADUserRiskEvents", IPAddress = IpAddress, AdditionalInfo = RiskEventType
+),
+(
+    AADNonInteractiveUserSignInLogs
+    | where IPAddress == ipAddressToSearch
+    | project Timestamp = TimeGenerated, Table = "AADNonInteractiveUserSignInLogs", IPAddress, AdditionalInfo = UserAgent
+),
+(
+    MicrosoftAzureBastionAuditLogs
+    | where TargetVMIPAddress == ipAddressToSearch or ClientIpAddress == ipAddressToSearch
+    | project Timestamp = TimeGenerated, Table = "MicrosoftAzureBastionAuditLogs", IPAddress = coalesce(TargetVMIPAddress, ClientIpAddress), AdditionalInfo = UserAgent
+)
+| sort by Timestamp desc
+
+DeviceProcessEvents 
+| where InitiatingProcessVersionInfoInternalFileName == "AutoIt3.exe" // Check for "AutoIt" scripts, even if it's renamed.  
+| where ProcessCommandLine has "--remote-debugging-port" // Identify Chromium based browsers (chrome.exe, msedge.exe, brave.exe etc) being launched in remote debugging mode. 
+| project DeviceId, Timestamp, InitiatingProcessParentFileName, InitiatingProcessFileName, InitiatingProcessFolderPath, InitiatingProcessVersionInfoInternalFileName, InitiatingProcessCommandLine, FileName, ProcessCommandLine
+
+DeviceEvents
+| where ActionType == "DpapiAccessed"
+| where InitiatingProcessVersionInfoInternalFileName == "AutoIt3.exe"
+| where (AdditionalFields has_any("Google Chrome", "Microsoft Edge") and AdditionalFields has_any("SPCryptUnprotect"))
+| extend json = parse_json(AdditionalFields)
+| extend dataDesp = tostring(json.DataDescription.PropertyValue)
+| extend opType = tostring(json.OperationType.PropertyValue)
+| where (dataDesp in~ ("Google Chrome", "Microsoft Edge") and opType =~ "SPCryptUnprotect")
+| project Timestamp, ReportId, DeviceId, ActionType, InitiatingProcessParentFileName, InitiatingProcessFileName, InitiatingProcessVersionInfoInternalFileName, InitiatingProcessCommandLine, AdditionalFields, dataDesp, opType
+
+DeviceEvents
+| where ActionType == "DpapiAccessed"
+| where InitiatingProcessFileName has_any ("RegAsm.exe", "MSBuild.exe")
+| where (AdditionalFields has_any("Google Chrome", "Microsoft Edge") and  AdditionalFields has_any("SPCryptUnprotect"))
+| extend json = parse_json(AdditionalFields)
+| extend dataDesp = tostring(json.DataDescription.PropertyValue)
+| extend opType = tostring(json.OperationType.PropertyValue)
+| where (dataDesp in~ ("Google Chrome", "Microsoft Edge") and opType =~ "SPCryptUnprotect")
+| project Timestamp, ReportId, DeviceId, ActionType, InitiatingProcessParentFileName, InitiatingProcessFileName, InitiatingProcessVersionInfoInternalFileName, InitiatingProcessCommandLine, AdditionalFields, dataDesp, opType
+
+let browserDirs = pack_array(@"\Google\Chrome\User Data\", @"\Microsoft\Edge\User Data\", @"\Mozilla\Firefox\Profiles\"); 
+let browserSensitiveFiles = pack_array("Web Data", "Login Data", "key4.db", "formhistory.sqlite", "cookies.sqlite", "logins.json", "places.sqlite", "cert9.db");
+DeviceEvents
+| where AdditionalFields has_any ("FileOpenSource") // Filter for "File Open" events.
+| where InitiatingProcessVersionInfoInternalFileName == "AutoIt3.exe"
+| where (AdditionalFields has_any(browserDirs) or  AdditionalFields has_any(browserSensitiveFiles)) 
+| extend json = parse_json(AdditionalFields)
+| extend File_Name = tostring(json.FileName.PropertyValue)
+| where (File_Name has_any (browserDirs) and File_Name has_any (browserSensitiveFiles))
+| project Timestamp, ReportId, DeviceId, InitiatingProcessParentFileName, InitiatingProcessFileName, InitiatingProcessVersionInfoInternalFileName, InitiatingProcessCommandLine, File_Name
+
+let browserDirs = pack_array(@"\Google\Chrome\User Data\", @"\Microsoft\Edge\User Data\", @"\Mozilla\Firefox\Profiles\"); 
+let browserSensitiveFiles = pack_array("Web Data", "Login Data", "key4.db", "formhistory.sqlite", "cookies.sqlite", "logins.json", "places.sqlite", "cert9.db");
+DeviceEvents
+| where AdditionalFields has_any ("FileOpenSource") // Filter for "File Open" events.
+| where InitiatingProcessFileName has_any ("RegAsm.exe", "MSBuild.exe")
+ | where (AdditionalFields has_any(browserDirs) or  AdditionalFields has_any(browserSensitiveFiles)) 
+| extend json = parse_json(AdditionalFields)
+| extend File_Name = tostring(json.FileName.PropertyValue)
+| where (File_Name has_any (browserDirs) and File_Name has_any (browserSensitiveFiles))
+| project Timestamp, ReportId, DeviceId, InitiatingProcessParentFileName, InitiatingProcessFileName, InitiatingProcessVersionInfoInternalFileName, InitiatingProcessCommandLine, File_Name
