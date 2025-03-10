@@ -1,0 +1,34 @@
+let MoonStoneSleet_threats = dynamic(["Behavior:Win64/PennyCrypt", "HackTool:Win32/Mimikatz", "HackTool:Win64/Mimikatz ", "TrojanDropper:Win32/SplitLoader", "TrojanDropper:Win64/YouieLoad" ]);
+SecurityAlert
+| where ProviderName == "MDATP"
+| extend ThreatName = tostring(parse_json(ExtendedProperties).ThreatName)
+| extend ThreatFamilyName = tostring(parse_json(ExtendedProperties).ThreatFamilyName)
+| where ThreatName in~ (MoonStoneSleet_threats) or ThreatFamilyName in~ (MoonStoneSleet_threats)
+| extend CompromisedEntity = tolower(CompromisedEntity)
+| join kind=inner (
+    DeviceInfo
+    | extend DeviceName = tolower(DeviceName)
+) on $left.CompromisedEntity == $right.DeviceName
+| summarize arg_max(TimeGenerated, *) by DisplayName, ThreatName, ThreatFamilyName, PublicIP, AlertSeverity, Description, tostring(LoggedOnUsers), DeviceId, TenantId, CompromisedEntity, ProductName, Entities
+| extend HostName = tostring(split(CompromisedEntity, ".")[0]), DomainIndex = toint(indexof(CompromisedEntity, '.'))
+| extend HostNameDomain = iff(DomainIndex != -1, substring(CompromisedEntity, DomainIndex + 1), CompromisedEntity)
+| project-away DomainIndex
+| project TimeGenerated, DisplayName, ThreatName, ThreatFamilyName, PublicIP, AlertSeverity, Description, LoggedOnUsers, DeviceId, TenantId, CompromisedEntity, ProductName, Entities, HostName, HostNameDomain
+
+
+DeviceProcessEvents
+| where (FileName has_any ("procdump.exe",
+"procdump64.exe") and ProcessCommandLine has "lsass") or  
+(ProcessCommandLine
+has "lsass.exe" and (ProcessCommandLine has "-accepteula"
+or ProcessCommandLine contains "-ma"))
+
+let c2servers = dynamic(['mingeloem.com','matrixane.com']);
+DeviceNetworkEvents
+| where RemoteUrl has_any (c2servers)
+| project DeviceId, LocalIP, DeviceName, RemoteUrl, InitiatingProcessFileName, InitiatingProcessCommandLine, Timestamp
+
+let c2servers = dynamic(['detankwar.com','defitankzone.com']);
+DeviceNetworkEvents
+| where RemoteUrl has_any (c2servers)
+| project DeviceId, LocalIP, DeviceName, RemoteUrl, InitiatingProcessFileName, InitiatingProcessCommandLine, Timestamp
