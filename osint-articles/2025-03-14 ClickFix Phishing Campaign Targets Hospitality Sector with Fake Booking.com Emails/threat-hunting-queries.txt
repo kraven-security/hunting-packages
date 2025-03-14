@@ -1,0 +1,21 @@
+let c2Servers = dynamic(['92.255.57.155','147.45.44.131','176.113.115.170','31.177.110.99','185.7.214.54','176.113.115.225','87.121.221.124','185.149.146.164']);
+DeviceNetworkEvents
+| where RemoteIP has_any(c2Servers)
+| project Timestamp, DeviceId, DeviceName, LocalIP, RemoteIP, InitiatingProcessFileName, InitiatingProcessCommandLine
+
+let lookback = 30d;
+let ioc_ip_addr = dynamic(['92.255.57.155','147.45.44.131','176.113.115.170','31.177.110.99','185.7.214.54','176.113.115.225','87.121.221.124','185.149.146.164']); 
+_Im_NetworkSession(starttime=todatetime(ago(lookback)), endtime=now())
+| where DstIpAddr in (ioc_ip_addr) or DstDomain has_any (ioc_domains)
+| summarize imNWS_mintime=min(TimeGenerated), imNWS_maxtime=max(TimeGenerated), EventCount=count() by SrcIpAddr, DstIpAddr, DstDomain, Dvc, EventProduct, EventVendor
+
+let lookback = 30d;
+let ioc_ip_addr = dynamic(['92.255.57.155','147.45.44.131','176.113.115.170','31.177.110.99','185.7.214.54','176.113.115.225','87.121.221.124','185.149.146.164']); 
+_Im_WebSession(starttime=todatetime(ago(lookback)), endtime=now())
+| where DstIpAddr has_any (ioc_ip_addr)
+ | summarize imWS_mintime=min(TimeGenerated), imWS_maxtime=max(TimeGenerated), EventCount=count() by SrcIpAddr, DstIpAddr, Url, Dvc, EventProduct, EventVendor
+
+let ioc_sha_hashes =dynamic(["01ec22c3394eb1661255d2cc646db70a66934c979c2c2d03df10127595dc76a6"," f87600e4df299d51337d0751bcf9f07966282be0a43bfa3fd237bf50471a981e ","0c96efbde64693bde72f18e1f87d2e2572a334e222584a1948df82e7dcfe241d"]);  imFileEvent
+  | where SrcFileSHA256 in (ioc_sha_hashes) or TargetFileSHA256 in (ioc_sha_hashes)
+  | extend AccountName = tostring(split(User, @'\')[1]), AccountNTDomain = tostring(split(User, @'\')[0])
+  | extend AlgorithmType = "SHA256"
