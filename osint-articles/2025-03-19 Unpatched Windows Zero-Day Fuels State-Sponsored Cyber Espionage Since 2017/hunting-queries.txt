@@ -1,0 +1,1 @@
+eventSubId:2 AND (processFilePath:\"*\\cmd.exe\" OR processFilePath:\"*\\powershell.exe\") AND parentFilePath:\"*.lnk\"
