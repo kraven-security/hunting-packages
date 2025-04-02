@@ -1,0 +1,16 @@
+T1071.001 - Application Layer Protocol: Web Protocols 
+T1105 - Ingress Tool Transfer
+T1110.003 - Brute Force: Password Spraying 
+T1564.001 - Hide Artifacts: Hidden Files and Directories  
+T1070.004 - Indicator Removal: File Deletion  
+T1036.005 - Masquerading: Match Legitimate Name or Location  
+T1027.001 - Obfuscated Files or Information: Binary Padding  
+T1027.002 - Obfuscated Files or Information: Software Packing  
+T1620 – Reflective Code Loading  
+T1059.004 - Command and Scripting Interpreter: Unix Shell  
+T1190 - Exploit Public-Facing Application  
+T1098 - Account Manipulation  
+T1136 - Create Account  
+T1053.003 - Scheduled Task/Job: Cron  
+T1496 – Resource Hijacking  
+T1082 - System Information Discovery  

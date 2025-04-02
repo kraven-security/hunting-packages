@@ -16,7 +16,7 @@ Key takeaways:
 
 ## Package Content
 
-- `iocs.txt`: List of all Indicators of Compromise (IOCs) in the article. All endpoint IOCs.
+- `iocs.txt`: List of all Indicators of Compromise (IOCs) in the article.
 - `mitre-attack-ttps.txt`: List of MITRE ATT&CK techniques observed.
 - `wallets.txt`: List of crypto wallets observed.
 - `endpoint-iocs.txt`: List of endpoint IOCs in the article.
