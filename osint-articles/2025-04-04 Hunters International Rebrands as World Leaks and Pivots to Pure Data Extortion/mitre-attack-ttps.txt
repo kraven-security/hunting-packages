@@ -1,0 +1,15 @@
+T1059 - Command and Scripting Interpreter
+T1078.002 - Valid Accounts, Domain Accounts
+T1562.001 - Impair Defenses, Disable or Modify Tools
+T1027.002 - Obfuscated Files or Information: Software Packing
+T1027.008 - Obfuscated Files or Information: Stripped Payloads 
+T1497.003 - Virtualization/Sandbox Evasion: Time Based Evasion
+T1057 - Process Discovery
+T1135 - Network Share Discovery
+T1083 - File and Directory Discovery
+T1021.002 - Remote Services: SMB/Windows Admin Shares
+T1090.003 - Proxy: Multi-hop Proxy
+T1020 - Automated Exfiltration
+T1490 - Inhibit System Recovery
+T1489 - Service Stop
+T1486 - Data Encrypted for Impact
