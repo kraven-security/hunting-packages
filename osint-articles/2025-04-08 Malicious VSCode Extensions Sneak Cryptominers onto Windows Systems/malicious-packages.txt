@@ -1,0 +1,10 @@
+prettierteam.prettier
+markh.chatgpt-autocoder-vscode
+markh.claude-autocoder-vscode
+markh.discord-rich-presence-vs
+markh.golang-compiler-vscode
+markh.html-obfuscator-vscode
+markh.python-obfuscator-vscode
+markh.rust-compiler-vs
+evaera-rbx.vscode-rojo-rbx
+vscodedeveloper.sobidity-compiler
