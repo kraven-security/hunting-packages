@@ -1,0 +1,8 @@
+T1566 - Phishing
+T1659 - Content Injection
+T1059 - Command and Scripting Interpreter
+T1555 - Credentials from Password Stores
+T1204 - User Execution
+T1027 - Obfuscated Files or Information
+T1041 - Exfiltration Over C2 Channel
+T1497 - Virtualization/Sandbox Evasion
