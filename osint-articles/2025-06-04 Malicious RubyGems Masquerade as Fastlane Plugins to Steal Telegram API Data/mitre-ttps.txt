@@ -1,0 +1,4 @@
+T1195.002 - Supply Chain Compromise: Compromise Software Supply Chain
+T1036.005 - Masquerading, Match legitimate name or location
+T1041 - Exfiltration over C2 channel
+T1078 - Valid Accounts
