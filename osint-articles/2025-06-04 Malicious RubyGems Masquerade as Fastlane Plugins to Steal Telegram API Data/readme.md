@@ -18,8 +18,7 @@ Key takeaways:
 
 ## Package Content
 
-- `iocs.txt`: List of all Indicators of Compromise (IOCs) in the article.
-- `endpoint-iocs.txt`: List of endpoint IOCs in the article.
+- `iocs.txt`: List of all Indicators of Compromise (IOCs) in the article. All ntework IOCs.
 - `network-iocs.txt`: List of network IOCs in the article.
 - `mitre-ttps.txt`: MITRE ATT&CK tactics, techniques, and procedures in the article.
 
