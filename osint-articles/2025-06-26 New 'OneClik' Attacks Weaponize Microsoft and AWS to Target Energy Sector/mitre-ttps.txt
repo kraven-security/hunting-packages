@@ -1,0 +1,8 @@
+T1566.002 - Phishing: Spearphishing Link
+T1127.002 - Trusted Developer Utilities Proxy Execution: ClickOnce
+T1574.014 - Hijack Execution Flow: AppDomainManager
+T1140 - Deobfuscate/Decode Files
+T1622 - Debugger Evasion
+T1562.006 - Impair Defenses: ETW
+T1071.001 - Application Layer Protocol: Web Protocols
+T1102.002 - Web Service: Cloud API
