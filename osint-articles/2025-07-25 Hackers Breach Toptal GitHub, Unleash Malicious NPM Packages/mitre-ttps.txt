@@ -1,0 +1,5 @@
+T1195.002 — Supply Chain Compromise: Compromise Software Supply Chain
+T1078 — Valid Accounts
+T1555 — Credentials from Password Stores
+T1041 — Exfiltration Over C2 Channel
+T1485 — Data Destruction
