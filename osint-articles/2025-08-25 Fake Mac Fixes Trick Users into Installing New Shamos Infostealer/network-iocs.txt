@@ -1,0 +1,7 @@
+https://icloudservers.com/gm/install.sh
+https://macostutorial.com/iterm2/install.sh
+https://icloudservers.com/gm/update
+https://macostutorial.com/iterm2/update
+mac-safer.com
+rescue-mac.com
+https://github.com/jeryrymoore/Iterm2

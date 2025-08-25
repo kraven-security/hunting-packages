@@ -1,0 +1,15 @@
+// “Bash script execution with calls to risky LOOBINs”
+event_platform=Mac #event_simpleName=ScriptControlScanInfo ScriptContent="*dscl*curl*xattr*chmod*"
+| format("[GraphExplorer](https://falcon.crowdstrike.com/graphs/process-explorer/tree?id=pid:%s:%s)", field=["aid", "TargetProcessId"], as=GraphExplorer)
+| groupBy([aid, GraphExplorer, ScriptContent])
+
+// “AppleScript execution under a binary from /tmp/”
+event_platform=Mac #event_simpleName=ProcessRollup2 ImageFileName="*/tmp/*"
+| join({event_platform=Mac #event_simpleName=ProcessRollup2 ImageFileName="*osascript" CommandLine="*-e*" | rename(field="CommandLine", as="ChildCommandLine") | rename(field="ImageFileName", as="ChildImageFileName")}, field=TargetProcessId, key=ParentProcessId, include=["ChildImageFileName", "ChildCommandLine"], limit=20000)
+| format("[GraphExplorer](https://falcon.crowdstrike.com/graphs/process-explorer/tree?id=pid:%s:%s)", field=["aid", "TargetProcessId"], as=GraphExplorer)
+| groupBy([aid, GraphExplorer, ImageFileName, CommandLine, ChildImageFileName, ChildCommandLine])
+
+// “Curl with commandline indicative of data exfil”
+event_platform=Mac #event_simpleName=ProcessRollup2 FileName=curl CommandLine="*POST*out.zip*"
+| format("[GraphExplorer](https://falcon.crowdstrike.com/graphs/process-explorer/tree?id=pid:%s:%s)", field=["aid", "TargetProcessId"], as=GraphExplorer)
+| groupBy([aid, GraphExplorer, ImageFileName, CommandLine])
