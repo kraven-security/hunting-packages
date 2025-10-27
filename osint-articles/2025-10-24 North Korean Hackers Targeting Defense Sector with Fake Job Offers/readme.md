@@ -18,7 +18,7 @@ Key takeaways:
 
 ## Package Content
 
-- `iocs.txt`: List of all Indicators of Compromise (IOCs) in the article. All network IOCs.
+- `iocs.txt`: List of all Indicators of Compromise (IOCs) in the article. 
 - `endpoint-iocs.txt`: List of endpoint IOCs in the article.
 - `network-iocs.txt`: List of network IOCs in the article.
 
