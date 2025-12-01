@@ -1,0 +1,7 @@
+pypiserver >=1.1.1, < 2.4.0
+slapos.core >=0, <=1.19.0 (newest version at the time of writing)
+roman >=2.0.0, <3.2
+xlutils >=1.6.0, <2.0.0
+testfixtures >=2.3.4, <3.0.2
+imio-pm-locales >=4.1.18.1, <4.2.20
+pyquery >= 1.2.10, <2.0.0
