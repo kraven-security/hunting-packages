@@ -1,0 +1,7 @@
+api.databycloud.com
+api.databycloud.com/api/v1/mv3
+api.software-access.com
+api.software-access.com/api/v1/mv3
+wss://api.software-access.com
+user.software-access.com
+admin.software-access.com
