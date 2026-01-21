@@ -1,0 +1,6 @@
+https://github.com/CannonOps/backend/blob/dev/.vscode/tasks.json
+https://github.com/CannonOps/frontend-website/blob/dev/.vscode/tasks.json
+https://edgeauth.vercel.app/api/getMoralisData?token=Z4T9QH
+https://moralmetrics.vercel.app/api/getMoralisData?token=Z4T9QH 
+87.236.177.9:3000
+srv37746.hosted-by-eurohoster.org

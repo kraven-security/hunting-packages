@@ -1,0 +1,13 @@
+67c05c1624a227959728e960e4563435db2519a24a46e95207a42ea8d4307e2d
+f8ae6ae9d6a13a8dddb05975930161601b5cfdd0cec30b7efdc5ba0606774998
+71e4ea17c871b983a2cbbea7a4fbd7fe498951c8fe4a1e17377e9aa06fd7184a
+71d8a974548e4e152e2c818d1febb7862632c1f9bff6adaa731bbaf6b23bd4b9
+1b26f73fa88f8c3b17adf6db12ec674481db1f92eb04806815b8fbd6086f07ef
+a2194390105731ce33cb9a51011c42a39a440942e907099f072916a36f17ef4b
+932a67816b10a34d05a2621836cdf7fbf0628bbfdf66ae605c5f23455de1e0bc
+https://github.com/CannonOps/backend/blob/dev/.vscode/tasks.json
+https://github.com/CannonOps/frontend-website/blob/dev/.vscode/tasks.json
+https://edgeauth.vercel.app/api/getMoralisData?token=Z4T9QH
+https://moralmetrics.vercel.app/api/getMoralisData?token=Z4T9QH 
+87.236.177.9:3000
+srv37746.hosted-by-eurohoster.org
