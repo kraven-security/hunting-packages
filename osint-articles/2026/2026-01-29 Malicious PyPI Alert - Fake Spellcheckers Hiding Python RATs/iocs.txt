@@ -1,0 +1,4 @@
+updatenet.work
+https://updatenet.work/settings/history.php
+https://updatenet.work/update1.php
+172.86.73.139 
