@@ -1,18 +1,6 @@
 388c53e8ff438f0cf101fe0322ad8f32bae140ff85da9b71b0fa366a76097408
-	
-
-SHA-256: DLPUserAgent.exe (Legitimate)
-
 6fbd98bbdb8a34dd563f29f45c66adf5c53b1aff225269af3ceb56d76ecd677d
-	
-
-SHA-256: mpclient.dll (Malicious Loader)
-
 64ec615c046a59c08f0ddf3fe9f93e0c9e1bed227d980628cc09600e94adcd25
-	
-
-SHA-256: mpclient2.dll (Legitimate)
-
 1175b1c56d59b736fe25495674ee3f83848e7785fde8ba9e207d283fed9b36c7
 c10e144c25c1bac0692ed0b31dd626ab9195c5285b82430371a4ecdbd6d7f3fd
 b1ccee3d0dc7a85c117580cc08b8edcb8118b5612669300d4b006f50663b387e
