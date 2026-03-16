@@ -1,0 +1,11 @@
+# Files signed by Taiyuan Lihua Near Information Technology Co., Ltd.
+let a = DeviceFileCertificateInfo
+| where Signer == "Taiyuan Lihua Near Information Technology Co., Ltd."
+| distinct SHA1;
+DeviceProcessEvents
+| where SHA1 in(a)
+
+# Identify suspicious DLLs in Pulse Secure folder
+DeviceImageLoadEvents
+| where FolderPath contains "Pulse Secure" and FolderPath contains "Program Files" and (FolderPath contains "\\JUNS\\" or FolderPath contains "\\JAMUI\\")
+| where FileName has_any("inspector.dll","dwmapi.dll")
