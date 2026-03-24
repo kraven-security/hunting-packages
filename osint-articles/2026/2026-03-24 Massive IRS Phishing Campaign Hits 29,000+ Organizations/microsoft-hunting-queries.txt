@@ -1,0 +1,35 @@
+// Detect network IP and domain indicators of compromise using ASIM
+//IP list and domain list- _Im_NetworkSession
+let lookback = 30d;
+let ioc_ip_addr = dynamic([]);
+let ioc_domains = dynamic(["taxationstatments2025.com", "irs-doc.com", "gov-irs216.net", "private-adobe-client.im"]);
+_Im_NetworkSession(starttime=todatetime(ago(lookback)), endtime=now())
+| where DstIpAddr in (ioc_ip_addr) or DstDomain has_any (ioc_domains)
+| summarize imNWS_mintime=min(TimeGenerated), imNWS_maxtime=max(TimeGenerated),
+  EventCount=count() by SrcIpAddr, DstIpAddr, DstDomain, Dvc, EventProduct, EventVendor
+
+// Detect Web Sessions IP and file hash indicators of compromise using ASIM
+//IP list - _Im_WebSession
+let lookback = 30d;
+let ioc_ip_addr = dynamic([]);
+let ioc_sha_hashes =dynamic(["45b6b4db1be6698c29ffde9daeb8ffaa344b687d3badded2f8c68c922cdce6e0"]);
+_Im_WebSession(starttime=todatetime(ago(lookback)), endtime=now())
+| where DstIpAddr in (ioc_ip_addr) or FileSHA256 in (ioc_sha_hashes)
+| summarize imWS_mintime=min(TimeGenerated), imWS_maxtime=max(TimeGenerated),
+  EventCount=count() by SrcIpAddr, DstIpAddr, Url, Dvc, EventProduct, EventVendor
+
+// Detect domain and URL indicators of compromise using ASIM
+// file hash list - imFileEvent
+// Domain list - _Im_WebSession
+let ioc_domains = dynamic(["taxationstatments2025.com", "irs-doc.com", "gov-irs216.net", "private-adobe-client.im"]);
+_Im_WebSession (url_has_any = ioc_domains)
+
+// Detect files hashes indicators of compromise using ASIM
+// file hash list - imFileEvent
+let ioc_sha_hashes = dynamic(["45b6b4db1be6698c29ffde9daeb8ffaa344b687d3badded2f8c68c922cdce6e0"]);
+imFileEvent
+| where SrcFileSHA256 in (ioc_sha_hashes) or
+TargetFileSHA256 in (ioc_sha_hashes)
+| extend AccountName = tostring(split(User, @'')[1]), 
+  AccountNTDomain = tostring(split(User, @'')[0])
+| extend AlgorithmType = "SHA256"

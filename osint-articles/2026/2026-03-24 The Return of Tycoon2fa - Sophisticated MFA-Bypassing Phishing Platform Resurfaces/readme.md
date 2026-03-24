@@ -1,4 +1,4 @@
-# The Return of Tycoon2fA: Sophisticated MFA-Bypassing Phishing Platform Resurfaces
+# The Return of Tycoon2FA: Sophisticated MFA-Bypassing Phishing Platform Resurfaces
 
 Despite a major law enforcement disruption earlier this year, the notorious Tycoon2fa phishing-as-a-service (PhaaS) platform has returned with a stealthier, upgraded version. This Adversary-in-the-Middle (AitM) kit is specifically designed to bypass Multi-Factor Authentication (MFA) and hijack Microsoft 365 and Gmail accounts.
 
