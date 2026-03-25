@@ -12,7 +12,7 @@ Key takeaways:
 
 🛡️ Verification is Vital: Organizations must implement multi-factor identity verification for remote candidates and treat any request to download software or disable security settings during the hiring process as a high-risk red flag.
 
-🔗 [Source](https://www.securonix.com/blog/faux-elevate-threat-actors-crypto-miners-and-infostealers/S)
+🔗 [Source](https://www.securonix.com/blog/faux-elevate-threat-actors-crypto-miners-and-infostealers/)
 
 ## Package Content
 
