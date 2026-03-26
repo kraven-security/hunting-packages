@@ -1,0 +1,12 @@
+// Microsoft Sentinel — Railway login hunt (interactive):
+SigninLogs
+| where IPAddress startswith "162.220.234." or IPAddress startswith "162.220.232."
+| where ResultType == 0
+| project TimeGenerated, UserPrincipalName, AppDisplayName, IPAddress, AuthenticationRequirement, ConditionalAccessStatus
+| order by TimeGenerated desc
+
+// Hunt for BAV2ROPC programmatic token access from Railway:
+AADNonInteractiveUserSignInLogs
+| where IPAddress startswith "162.220.232." or IPAddress startswith "162.220.234."
+| where UserAgent contains "BAV2ROPC"
+| project TimeGenerated, UserPrincipalName, ResourceDisplayName, IPAddress 
