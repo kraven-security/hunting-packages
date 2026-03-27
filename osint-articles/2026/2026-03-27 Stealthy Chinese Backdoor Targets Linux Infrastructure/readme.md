@@ -1,18 +1,18 @@
-# Stealthy Chinese Backdoor Targets Linux Infrastructure
+# New Phishing Wave Targets TikTok for Business Accounts
 
-Cybersecurity researchers have identified a sophisticated new variant of the BPFdoor malware, linked to the China-based threat actor Red Menshen, targeting Linux systems. This "passive" backdoor is specifically engineered to infiltrate telecommunications and government sectors while remaining nearly invisible to traditional security monitoring.
+A sophisticated phishing campaign is currently impersonating TikTok Support to hijack high-value business and creator accounts. Attackers use deceptive "policy violation" warnings to lure users into providing credentials or scanning malicious QR codes.
 
 Key takeaways:
 
-🚨 Passive Stealth: BPFdoor avoids opening traditional network ports, instead using Berkeley Packet Filter (BPF) technology to "sniff" for specific trigger packets. This allows it to bypass firewalls and stay hidden from standard port scans.
+🚨 Policy Fear-Mongering: The attack starts with urgent emails claiming "trademark infringement," pressuring users to act quickly to avoid account suspension, a classic social engineering tactic designed to bypass critical thinking.
 
-🌐 Strategic Espionage: The campaign's focus on critical infrastructure and government entities suggests a high-priority mission centered on long-term intelligence gathering and persistent network access.
+🔗 Look-alike Domains: Scammers direct victims to highly convincing fake support portals designed to harvest credentials and session cookies, which can enable account takeover even if multi-factor authentication is active.
 
-🛡️ Advanced Evasion: This latest iteration features enhanced obfuscation and anti-analysis techniques, making it significantly harder for standard Endpoint Detection and Response (EDR) tools to identify malicious kernel-level activity.
+🤳 QR Code Risks: Some variations of this campaign use QR codes to redirect mobile users to phishing sites, a technique known as "quishing" that often bypasses traditional email security filters.
 
-💡 Detection Shift: Defense teams must evolve beyond monitoring open ports. Identifying this threat requires deep packet inspection and auditing for unauthorized raw sockets or unexpected BPF filters within the Linux kernel.
+🛡️ Verification is Vital: Always verify your account status directly through the official TikTok app or Business Suite. Never click links or download attachments from unexpected emails regarding "legal issues" or "copyright claims."
 
-🔗 [Source](https://www.rapid7.com/blog/post/tr-bpfdoor-telecom-networks-sleeper-cells-threat-research-report/)
+🔗 [Source](https://pushsecurity.com/blog/tiktok-phishing)
 
 ## Package Content
 
