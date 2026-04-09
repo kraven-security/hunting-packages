@@ -1,0 +1,8 @@
+apachelicense.vercel.app
+ngrok-free.vercel.app
+logkit.onrender.com
+logkit-tau.vercel.app
+66.45.225.94
+9a541dffb7fc18dc71dbc8523ec6c3a71c224ffeb518ae3a8d7d16377aebee58
+bb2a89001410fa5a11dea6477d4f5573130261badc67fe952cfad1174c2f0edd
+7c5adef4b5aee7a4aa6e795a86f8b7d601618c3bc003f1326ca57d03ec7d6524

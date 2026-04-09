@@ -1,0 +1,6 @@
+dev-log-core
+logkitx
+logger-base
+pino-debugger
+debug-fmt
+debug-glitz
