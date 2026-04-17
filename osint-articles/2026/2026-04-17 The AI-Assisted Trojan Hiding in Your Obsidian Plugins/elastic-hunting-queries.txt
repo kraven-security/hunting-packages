@@ -1,0 +1,6 @@
+event.category : file and process.name : (Obsidian or Obsidian.exe) and
+ file.path : *obsidian-shellcommands*
+
+event.category : process and event.type : start and
+ process.name : (sh or bash or zsh or powershell.exe or cmd.exe) and 
+ process.parent.name : (Obsidian.exe or Obsidian)
