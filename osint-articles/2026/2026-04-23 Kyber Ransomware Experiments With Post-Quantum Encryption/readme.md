@@ -14,6 +14,7 @@ Key takeaways
 
 ☑️ Recommendation 3: (Long-term) Harden virtualization hosts by disabling SSH unless strictly required and transition to immutable, air-gapped backups to ensure that even a full hypervisor compromise cannot lead to irreversible data loss or total management lockout.
 
+
 🔗 [Source](https://www.security.com/blog-post/harvester-new-linux-backdoor-gogra)
 
 ## Package Content
