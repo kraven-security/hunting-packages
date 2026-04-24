@@ -1,0 +1,4 @@
+checkmarx/cx-dev-assist@1.19.0
+checkmarx/cx-dev-assist@1.17.0
+checkmarx/ast-results@2.66.0
+checkmarx/ast-results@2.63.0
