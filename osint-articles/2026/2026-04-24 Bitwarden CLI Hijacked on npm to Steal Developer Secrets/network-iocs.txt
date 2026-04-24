@@ -1,0 +1,6 @@
+audit.checkmarx.cx
+94.154.172.43
+https://audit.checkmarx.cx/v1/telemetry
+https://api.github.com/search/commits?q=LongLiveTheResistanceAgainstMachines&sort=author-date&order=desc&per_page=50
+https://api.github.com/search/commits?q=beautifulcastle%20&sort=author-date&order=desc
+https://github.com/oven-sh/bun/releases/download/bun-v1.3.13/<asset>.zip
