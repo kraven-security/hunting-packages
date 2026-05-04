@@ -4,15 +4,15 @@ A sophisticated supply chain attack targeting the Ruby and Go ecosystems has bee
 
 Key takeaways
 
-🎯 Target: Developers and DevOps engineers utilizing RubyGems and Go modules, specifically those managing automated CI/CD runners and high-privilege build environments.
+🎯 **Target**: Developers and DevOps engineers utilizing RubyGems and Go modules, specifically those managing automated CI/CD runners and high-privilege build environments.
 
-💡 Insight: Beyond simple theft, this campaign employs advanced persistence techniques, such as planting "fake go wrappers" and manipulating GOPROXY settings to intercept future tool executions and bypass security checksums.
+💡 **Insight**: Beyond simple theft, this campaign employs advanced persistence techniques, such as planting "fake go wrappers" and manipulating `GOPROXY` settings to intercept future tool executions and bypass security checksums.
 
-☑️ Recommendation 1: Immediately audit your project dependencies for any packages associated with the "BufferZoneCorp" GitHub account or those using the knot- prefix in RubyGems (e.g., knot-activesupport-logger).
+☑️ **Recommendation 1**: Immediately audit your project dependencies for any packages associated with the "BufferZoneCorp" GitHub account or those using the `knot-` prefix in RubyGems (e.g., `knot-activesupport-logger`).
 
-☑️ Recommendation 2: Rotate all sensitive credentials, including AWS keys, SSH private keys, and GitHub tokens, if any suspicious modules were detected, as these packages actively harvest environment variables upon installation.
+☑️ **Recommendation 2**: Rotate all sensitive credentials, including AWS keys, SSH private keys, and GitHub tokens, if any suspicious modules were detected, as these packages actively harvest environment variables upon installation.
 
-☑️ Recommendation 3: Implement long-term "review gates" for new third-party utilities and enforce Software Composition Analysis (SCA) tools that can detect suspicious init() or extconf.rb execution behaviors before they reach production.
+☑️ **Recommendation 3**: Implement long-term "review gates" for new third-party utilities and enforce Software Composition Analysis (SCA) tools that can detect suspicious `init()` or `extconf.rb` execution behaviors before they reach production.
 
 🔗 [Source](https://socket.dev/blog/73-open-vsx-sleeper-extensions-glassworm)
 
