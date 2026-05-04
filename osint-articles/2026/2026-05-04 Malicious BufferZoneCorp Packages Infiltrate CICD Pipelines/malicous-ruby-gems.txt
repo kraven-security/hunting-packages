@@ -1,0 +1,7 @@
+knot-activesupport-logger
+knot-devise-jwt-helper
+knot-rack-session-store
+knot-rails-assets-pipeline
+knot-rspec-formatter-json
+knot-date-utils-rb
+knot-simple-formatter
