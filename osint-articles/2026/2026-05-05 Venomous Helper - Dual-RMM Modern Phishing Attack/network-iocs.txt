@@ -1,0 +1,9 @@
+gruta.com.mx 	
+server.cubatiendaalimentos.com.mx/~tiendazoycom/sns/ 	
+server.cubatiendaalimentos.com.mx/~tiendazoycom/sns/statement5648.exe
+84.200.205.233 	
+213.136.71.246 	
+sslzeromail.run.place 	
+http://84.200.205.233:5555/access/ 	
+udp://84.200.205.233:5555 
+relay://sslzeromail.run.place:8041/
