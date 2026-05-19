@@ -18,7 +18,7 @@ Key takeaways:
 
 ## Package Content
 
-- `iocs.txt`: List of all Indicators of Compromise (IOCs) in the article. All network IOCs.
+- `iocs.txt`: List of all Indicators of Compromise (IOCs) in the article. All endpoint IOCs.
 - `malicious-packages.txt`: List of malicious package names in the article.
 
 <br>
