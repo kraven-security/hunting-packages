@@ -1,0 +1,7 @@
+direct-download.gleeze.com
+start-download.gleeze.com
+direct-downloads.giize.com
+free-download.giize.com
+directdownload.icu
+193.42.11.108
+wss://minemine.gleeze.com:8443/ws

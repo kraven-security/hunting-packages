@@ -1,0 +1,71 @@
+// Suspicious binary execution from unusual directory
+DeviceProcessEvents
+| where Timestamp > ago(30d)
+| where FileName =~ "RuntimeHost.exe"
+   or InitiatingProcessFileName =~ "RuntimeHost.exe"
+| where (FolderPath has @"\Caches\D3F4E2A1")
+     or (InitiatingProcessFolderPath has @"\Caches\D3F4E2A1")
+| project Timestamp, DeviceId, DeviceName,
+          FileName, FolderPath, ProcessCommandLine,
+          ParentProcess = InitiatingProcessFileName,
+          ParentProcessPath = InitiatingProcessFolderPath,
+          ParentProcessCmd = InitiatingProcessCommandLine,
+          AccountName
+
+
+// Suspicious scheduled task creation activity
+//Run the below query to identify events linked to the suspicious scheduled task creation activity
+ DeviceProcessEvents
+| where Timestamp > ago(30d)
+| where FileName =~ "schtasks.exe"
+| where ProcessCommandLine has "/create"
+| where ProcessCommandLine has_any (
+    "Windows System Health Monitor",
+    "Windows System Health"
+  )
+| project Timestamp, DeviceId, DeviceName,
+          AccountName,
+          TaskCreationCmd = ProcessCommandLine,
+          ParentProcess = InitiatingProcessFileName,
+          ParentProcessPath = InitiatingProcessFolderPath,
+          ParentProcessCmd = InitiatingProcessCommandLine
+
+
+
+// Suspicious MSIEXEC activity associated with a binary loading a suspicious DLL
+let SideloadingProcesses =
+DeviceImageLoadEvents
+    | where Timestamp > ago(60d)
+    | where FileName =~ "autorun.dll"
+    | where InitiatingProcessFolderPath  has_any (
+        @"\Downloads\", @"\AppData\Local\Temp\", @"\AppData\Roaming\",
+        @"\ProgramData\", @"\Users\Public\",@"\Desktop\"
+      )
+      |where FolderPath has @"\sources\"
+    | project SideloadTime = Timestamp, DeviceId, DeviceName,
+              LauncherProcessId = InitiatingProcessId,
+              LauncherCreationTime = InitiatingProcessCreationTime,
+              LauncherName = InitiatingProcessFileName,
+              LauncherPath = InitiatingProcessFolderPath,
+              SideloadedDllPath = FolderPath;
+let unique_devices=SideloadingProcesses|distinct DeviceId;
+let MsiSpawns =
+ DeviceProcessEvents
+    | where Timestamp > ago(60d)
+    |where DeviceId in(unique_devices)
+    | where FileName =~ "msiexec.exe"
+    | where ProcessCommandLine has "/i"
+    | where ProcessCommandLine has "/quiet"
+    | project MsiSpawnTime = Timestamp, DeviceId,
+              LauncherProcessId = InitiatingProcessId,
+              LauncherCreationTime = InitiatingProcessCreationTime,
+              MsiCmd = ProcessCommandLine,
+              MsiProcessId = ProcessId ;  
+SideloadingProcesses
+| join kind=inner MsiSpawns
+    on DeviceId, LauncherProcessId, LauncherCreationTime
+| where MsiSpawnTime between (SideloadTime .. (SideloadTime + 30m))
+| project SideloadTime, MsiSpawnTime,
+          DeviceId, DeviceName,
+          LauncherName, LauncherPath, LauncherProcessId,
+          SideloadedDllPath, MsiCmd, MsiProcessId
