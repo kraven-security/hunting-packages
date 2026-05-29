@@ -1,0 +1,33 @@
+#  How the "GreyVibe" Blends Into Critical Infrastructure Networks undetected 
+
+A new threat actor, JINX-0164, is targeting cryptocurrency organizations with bespoke macOS malware distributed through LinkedIn recruitment scams. The attacker moves laterally from compromised employee laptops into development pipelines, using stolen GitHub tokens to inject malicious code into internal repositories.
+
+Key takeaways
+
+**🎯 Target**: Engineering and development teams at cryptocurrency organizations using macOS workstations, along with interconnected software supply chains and GitHub code infrastructure.
+
+**💡 Insight**: Rather than pivoting to cloud accounts, JINX-0164 weaponizes internal development infrastructure using specialized tools to extract pipeline secrets and push code to production branches, turning the organization's build process into a self-propagating infection channel.
+
+**☑️ Recommendation 1**: Enable GitHub's Vigilant Mode immediately to visually flag unverified commits and mandate GPG/SSH commit signature verification across all active repositories to instantly halt developer impersonation.
+
+**☑️ Recommendation 2**: Conduct targeted threat-awareness briefings for development staff regarding high-fidelity LinkedIn recruiter profiles and fake video-conferencing software update prompts that deliver infostealers.
+
+**☑️ Recommendation 3**: Harden CI/CD pipeline infrastructure by enforcing fine-grained, least-privilege token permissions, conducting continuous behavior auditing on build environments, and monitoring for unauthorized corporate use of commercial VPN services.
+
+🔗 [Source](https://www.wiz.io/blog/threat-actors-target-crypto-orgs#indicators-of-compromise-iocs-110)
+
+## Package Content
+
+- `iocs.txt`: List of all Indicators of Compromise (IOCs) in the article. 
+- `endpoint-iocs.txt`: List of endpoint IOCs in the article.
+- `network-iocs.txt`: List of network IOCs in the article.
+- `threat-actor-aliases.txt`: List of aliases (email addresses) assocaited with the threat actor.
+- `yara.rules.yar`: List of YARA rules to detect the threat.
+
+<br>
+
+> [!NOTE]
+> Use the following scripts in [threat-hunting-scripts](../../threat-hunting-scripts/) to help you hunt:
+>
+> - `verify-iocs-vt.py`: Verify IOCs using VirusTotal Community API.
+> - `iocs-to-cs.py`: Upload IOCs to CrowdStrike Falcon IOC Management for detection and blocking.
