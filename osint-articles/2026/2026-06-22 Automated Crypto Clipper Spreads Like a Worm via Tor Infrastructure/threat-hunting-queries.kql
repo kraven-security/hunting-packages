@@ -1,0 +1,16 @@
+# Execution launched from scheduled tasks
+DeviceProcessEvents
+| where FileName =="schtasks.exe"
+| where ProcessCommandLine matches regex
+@"(?i)schtasks\s+/create\s+/tn\s+[a-z]{4,6}\s+/xml\s+C:\\Users\\Public\\Documents\\[a-z]{4,6}\\[a-z]{4,6}\.xml\s+/f"
+
+# Local Tor proxy activity (localhost:9050)
+DeviceNetworkEvents
+| where ActionType =="ConnectionSuccess"
+| where InitiatingProcessCommandLine has_all ("curl","socks5-hostname",".onion")
+
+# Tor-routed curl execution
+DeviceProcessEvents
+| where FileName =~ "curl.exe"
+| where ProcessCommandLine has_all ("--socks5-hostname", "localhost:9050")
+| project Timestamp, DeviceName, InitiatingProcessFileName, ProcessCommandLine
