@@ -1,0 +1,15 @@
+http://opi7.com
+http://xook.ajb8.com
+http://xonice.ahb8.com
+http://eixfi.ajb8.com
+https://dybic.ajb8.com
+https://sdkv1.dataexplore.cc
+https://sdkv1.dataexplore.co
+hgodpcx.auq8.com
+hgodpcx.ajb8.com
+io.ary2.com
+107.150.106.14
+https://hgodpcx.ajb8.com/prod/RTL819X/{version}/manifest.json
+https://hgodpcx.ajb8.com/prod/standard/{version}/manifest.json
+http://hgodpcx.ajb8.com/prod/RTL819X/{version}/syswapd0
+https://hgodpcx.ajb8.com/prod/standard/{version}/syswapd0-linux-amd64
