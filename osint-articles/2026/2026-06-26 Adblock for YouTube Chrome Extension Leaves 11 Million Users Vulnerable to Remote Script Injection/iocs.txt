@@ -1,0 +1,10 @@
+api.adblock-for-youtube.com
+get.adblock-for-youtube.com
+unistream.io
+cdn.unistream.io
+data.unistream.io
+adblock-for-chrome.com
+abfc-extension.com
+adblock-for-y.com
+update.adblock-for-y.com
+abu-xt.com
