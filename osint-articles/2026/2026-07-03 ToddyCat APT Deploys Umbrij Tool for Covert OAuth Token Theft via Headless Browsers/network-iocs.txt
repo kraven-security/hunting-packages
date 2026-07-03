@@ -1,0 +1,10 @@
+https://github.com/lincemorado97/CVE-2025-64446_CVE-2025-58034
+https://github.com/lincemorado97/CVE-2025-55182_CVE-2025-66478
+https://github.com/lincemorado97/CVE-2025-14847
+https://github.com/ogenich/CVE-2026-10520
+https://github.com/ogenich/CVE-2026-48908
+https://github.com/bolubey/CVE-2026-0257
+https://github.com/bolubey/CVE-2026-50751
+https://api.mapbox.com/datasets/v1/frankley/
+https://api.mapbox.com/datasets/v1/mattallahsaed/
+http://91.132.163.78:8001/assets/static/bundle.ext.min.de5b2bc9.js
