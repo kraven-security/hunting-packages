@@ -1,0 +1,11 @@
+https://api.stanfordstudies.com/app/log
+https://www.extensions-hub.com/partners/ 
+stanfordstudies.com
+extensions-hub.com
+api.stanfordstudies.com
+devos.stanfordstudies.com
+devlog.stanfordstudies.com
+api.extensions-hub.com
+dev-lb-672858631.us-east-2.elb.amazonaws.com
+91.195.240.87
+3.147.61.167
