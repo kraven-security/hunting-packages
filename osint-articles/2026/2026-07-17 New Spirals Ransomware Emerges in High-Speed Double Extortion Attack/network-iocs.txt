@@ -1,0 +1,5 @@
+185.141.216.194
+http://185.141.216.194/cd.jpg
+http://185.141.216.194/cd.zip
+https://computer.kplus.com/cd.zip
+https://beta.padmin.com/mybenefits/Templates/cd.zip
