@@ -1,0 +1,18 @@
+// Run the query below to identify suspicious commands executed through ClickFix-based activity observed while delivering this stealer
+DeviceRegistryEvents
+| where RegistryKey has "RunMRU"
+| where (RegistryValueData has_all ("rundll32", "@ssl", " /c ", " start ") and (RegistryValueData matches regex @"\\\\[^\\]+@ssl\\[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\\\w+\.\w+,#1" or
+RegistryValueData matches regex @"(?i)pushd \\\\[^\\]+@ssl\\[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12} ")) 
+or RegistryValueData has_all ("@ssl", " /c ", "conhost --headless ") and RegistryValueData contains "rundll32"
+
+// Run the query below to identify scheduled task creation used for persistence by a malicious PowerShell script
+DeviceProcessEvents
+| where InitiatingProcessFileName =~ "powershell.exe"
+| where InitiatingProcessCommandLine has_all ("-Command", "powershell")
+| where ProcessCommandLine has_all ("schtasks", " /run /tn ", " Autoupdate ") and ProcessCommandLine matches regex "[0-9]{8}"
+
+// Run the query below to identify suspicious MSHTA launch through PowerShell
+DeviceProcessEvents
+| where InitiatingProcessParentFileName has "explorer.exe"
+| where InitiatingProcessFileName =~ "powershell.exe" and InitiatingProcessCommandLine in~ ('"PowerShell.exe" ', '"PowerShell.exe"')
+| where ProcessCommandLine has_all ('"mshta.exe" https://') and ProcessCommandLine matches regex "/[0-9]{7}"
