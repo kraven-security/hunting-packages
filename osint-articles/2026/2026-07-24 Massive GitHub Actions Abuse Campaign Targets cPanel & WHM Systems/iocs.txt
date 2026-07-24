@@ -1,0 +1,10 @@
+43.228.157.68
+43.228.157.68:80
+http://43.228.157.68:80/api/dl/386
+http://43.228.157.68:80/api/dl/amd64
+http://43.228.157.68:80/api/dl/arm
+http://43.228.157.68:80/api/dl/arm64
+http://43.228.157.68:80/api/github-heartbeat
+http://43.228.157.68:80/api/github-results
+f5b0b742-240a-4811-8a5b-b0ba6060685d.dnshook.site
+22f721fd3a81d2e27cbf90a122bb977f630c50b79daa98350f0e57b04dfa81f1
