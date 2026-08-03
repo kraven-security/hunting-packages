@@ -1,0 +1,109 @@
+// Detect file creation after Wi-Fi connectivity test on devices
+let ncsi_endpoints = dynamic(["msftconnecttest.com","edge-http.microsoft.com","msftncsi.com","captive.apple.com","clients1.google.com",
+    "clients3.google.com","clients4.google.com","clients6.google.com","connectivitycheck.gstatic.com","connectivitycheck.android.com",
+    "android.clients.google.com","www.gstatic.com","detectportal.firefox.com","detectportal.brave-http-only.com","cloudflareportal.com",
+    "cloudflarecp.com","cloudflareok.com","connectivity-check.warp-svc","connectivity.cloudflareclient.com","spectrum.s3.amazonaws.com",
+    "nmcheck.gnome.org"]);
+let NCSIEvents = DeviceNetworkEvents
+    | where Timestamp > ago(7d)
+    | where RemoteUrl has_any (ncsi_endpoints)
+    | project NCSI_Timestamp = Timestamp, DeviceId, DeviceName, RemoteUrl, NCSI_ReportId = ReportId, NCSI_InitiatingProcessFileName = InitiatingProcessFileName, NCSI_InitiatingProcessCommandLine = InitiatingProcessCommandLine, NCSI_AccountName = InitiatingProcessAccountName;
+let FileDownloadEvents = DeviceFileEvents
+    | where Timestamp > ago(7d)
+    | where ActionType == "FileCreated"
+    | where FileName has_any (".exe",".msi",".zip",".rar",".7z")
+    | project Download_Timestamp = Timestamp, DeviceId, FileName, FolderPath, Download_ReportId = ReportId, Download_InitiatingProcessFileName = InitiatingProcessFileName, Download_InitiatingProcessCommandLine = InitiatingProcessCommandLine, Download_AccountName = InitiatingProcessAccountName;
+NCSIEvents
+| join kind=inner (
+    FileDownloadEvents
+) on DeviceId
+| where Download_Timestamp >= NCSI_Timestamp and Download_Timestamp <= NCSI_Timestamp + 2m
+| project
+    NCSI_Timestamp,
+    Download_Timestamp,
+    DeviceName,
+    DeviceId,
+    RemoteUrl,
+    FileName,
+    FolderPath,
+    InitiatingProcessFileName = Download_InitiatingProcessFileName,
+    InitiatingProcessCommandLine = Download_InitiatingProcessCommandLine,
+    AccountName = Download_AccountName,
+    NCSI_ReportId,
+    Download_ReportId
+
+// Detect connectivity to Storm-2945 infrastructure
+let target_domains = dynamic(["ms365-device.com", "ms365-live.com", "m365-owa.com", "owa-ms365.com"]);
+let target_ips = dynamic(["31.57.243.154", "38.146.28.75", "38.146.28.132", "104.194.159.150", "107.189.26.194", "213.145.86.112"]);
+DeviceNetworkEvents
+| where RemoteUrl has_any(target_domains) or RemoteIP in (target_ips)
+| project
+    Timestamp,
+    DeviceName,
+    DeviceId,
+    RemoteUrl,
+    RemoteIP,
+    LocalIP,
+    InitiatingProcessFileName,
+    InitiatingProcessCommandLine,
+    AccountName = InitiatingProcessAccountName,
+    ReportId
+
+// Detect CornFlake RAT presence on affected systems
+DeviceProcessEvents
+| where FolderPath == "%APPDATA%\\svchost32\\svchost32.exe"
+   or FolderPath endswith @"\svchost32\svchost32.exe"
+| project Timestamp, DeviceName, DeviceId, FileName, FolderPath, InitiatingProcessFileName, InitiatingProcessCommandLine, AccountName, ReportId
+
+// Detect CornFlake RAT Windows service registration
+DeviceRegistryEvents
+| where RegistryKey has @"\SYSTEM\CurrentControlSet\Services\svchost32"
+| where ActionType == "RegistryValueSet"
+| where (RegistryValueName == "DisplayName" and RegistryValueData == "Cloud Sync Service")
+    or (RegistryValueName == "Description" and RegistryValueData == "Synchronizes files with the cloud storage provider")
+| project
+    Timestamp,
+    DeviceName,
+    DeviceId,
+    RegistryKey,
+    RegistryValueName,
+    RegistryValueData,
+    ActionType,
+    InitiatingProcessFileName,
+    InitiatingProcessCommandLine,
+    InitiatingProcessAccountName,
+    ReportId
+
+// Detect network IP and domain indicators of compromise using ASIM
+//IP list and domain list- _Im_NetworkSession
+let lookback = 30d;
+let ioc_ip_addr = dynamic(["213.145.86.112"]);
+let ioc_domains = dynamic(["213.145.86.112/t/pixel.gif", "213.145.86.112/cdn/chunks/polyfill-7e2b.min.js", "213.145.86.112/t/event"]);
+_Im_NetworkSession(starttime=todatetime(ago(lookback)), endtime=now())
+| where DstIpAddr in (ioc_ip_addr) or DstDomain has_any (ioc_domains)
+| summarize imNWS_mintime=min(TimeGenerated), imNWS_maxtime=max(TimeGenerated),
+  EventCount=count() by SrcIpAddr, DstIpAddr, DstDomain, Dvc, EventProduct, EventVendor
+
+// Detect web sessions IP and file hash indicators of compromise using ASIM
+//IP list - _Im_WebSession
+let lookback = 30d;
+let ioc_ip_addr = dynamic(["213.145.86.112"]);
+let ioc_sha_hashes =dynamic([“918fa52ae45ed60ba7cc8bdc99c3cbe9ab92e0375ec31fc05d0d4513be11c593”, “be99857449d2856dd5a84e21c8a3d5e0e01456adb44062ddec5a6b4970d8d42c”]);
+_Im_WebSession(starttime=todatetime(ago(lookback)), endtime=now())
+| where DstIpAddr in (ioc_ip_addr) or FileSHA256 in (ioc_sha_hashes)
+| summarize imWS_mintime=min(TimeGenerated), imWS_maxtime=max(TimeGenerated),
+  EventCount=count() by SrcIpAddr, DstIpAddr, Url, Dvc, EventProduct, EventVendor
+
+// Detect domain and URL indicators of compromise using ASIM
+// file hash list - imFileEvent
+// Domain list - _Im_WebSession
+let ioc_domains = dynamic(["https://213.145.86.112/t/pixel.gif", "https://213.145.86.112/cdn/chunks/polyfill-7e2b.min.js", "https://213.145.86.112/t/event"]);
+_Im_WebSession (url_has_any = ioc_domains)
+
+// ChocoShell C2 communications
+let lookback = 30d;
+let ioc_url_artifacts = dynamic(["/t/pixel.gif?m="]);
+_Im_WebSession(starttime=todatetime(ago(lookback)), endtime=now())
+| where DstDomain  in (ioc_url_artifacts)
+| summarize imWS_mintime=min(TimeGenerated), imWS_maxtime=max(TimeGenerated),
+  EventCount=count() by SrcIpAddr, DstIpAddr, Url, Dvc, EventProduct, EventVendor
