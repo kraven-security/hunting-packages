@@ -1,0 +1,5 @@
+mangorbit.com
+pulse.mangorbit.com
+pulse2.mangorbit.com
+api.mangorbit.com
+cb.mangorbit.com
