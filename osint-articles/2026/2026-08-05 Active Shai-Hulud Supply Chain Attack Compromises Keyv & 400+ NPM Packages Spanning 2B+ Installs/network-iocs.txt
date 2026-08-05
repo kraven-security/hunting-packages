@@ -1,0 +1,2 @@
+https://npm-cache.com:443/router
+eth-mainnet.nodereal.io 
