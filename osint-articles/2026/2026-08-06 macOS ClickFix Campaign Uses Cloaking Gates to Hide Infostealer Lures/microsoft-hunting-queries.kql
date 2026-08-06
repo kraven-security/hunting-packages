@@ -1,0 +1,7 @@
+// Known-IOC network sweep (mirrors a standard IOC hunt; populate from the IOC table and refresh as domains rotate)
+let lookback = 30d;
+let SuspiciousDomains = 
+dynamic(["lemonfilewave.com","limefilescope.com","mangocloudfile.com"]);
+DeviceNetworkEvents   
+| where Timestamp >ago(lookback) 
+| where RemoteUrl has_any (SuspiciousDomains)
