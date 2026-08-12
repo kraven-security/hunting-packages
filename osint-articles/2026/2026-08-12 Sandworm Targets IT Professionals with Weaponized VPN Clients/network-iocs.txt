@@ -1,0 +1,12 @@
+https://douncloud.site/sitedatastorageadvanced/?subid=%UUID%---%MACHINEGUID%
+https://sourceforge.net/projects/soprabulgariavpn/files/sopravpn_v10.exe/download
+https://sourceforge.net/projects/sopravpn/files/sopravpn_v5.exe/download
+https://sourceforge.net/projects/sopravpn/files/sopravpn.exe/download
+https://soprasteria-bg.com/
+https://atlasgroup-ua.com/
+udp://139.28.36.23:51820
+139.28.36.23
+douncloud.site
+atlasgroup-ua.com
+soprasteria-bg.com
+soprasteriabg.com
