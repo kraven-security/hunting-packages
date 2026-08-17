@@ -1,0 +1,30 @@
+// Execution of the preinstall script
+DeviceProcessEvents
+    | where Timestamp > ago(3d)
+    | where FileName in~ ("node", "node.exe")
+    | where ProcessCommandLine in~ ("node setup.mjs", "node  setup.mjs")
+ 
+CloudProcessEvents
+    | where Timestamp > ago(3d)
+    | where FileName in~ ("node", "node.exe")
+    | where ProcessCommandLine in~ ("node setup.mjs", "node  setup.mjs")
+
+// Execution of second-stage JavaScript using Bun runtime
+DeviceProcessEvents
+    | where Timestamp > ago(3d)
+    | where InitiatingProcessFileName in~ ("node", "node.exe")
+    | where InitiatingProcessCommandLine in~ ("node setup.mjs", "node  setup.mjs")
+    | where FileName in~ ("bun", "bun.exe")
+    | where FolderPath contains "bun-dl-" or ProcessCommandLine has "node_modules"
+
+// Malicious JavaScript from malicious packages
+DeviceFileEvents
+| where Timestamp > ago(3d)
+| where SHA256 in~ ("9fc2570b7cef51c1b8df116d144d11ff4096357be7d2c4c6367cfc2509cf1bcc", "fd3ca4007b225fdf8de7af4345a19179d5efa8c4bb9205f88cda806e5684b1eb", "54dc7ea54a1317cca0e890a2770630cf7fa6c97813e0cb9d2caa93012b350668")
+
+// Credential access by malicious JavaScript
+DeviceProcessEvents
+   | where Timestamp > ago(3d)
+   | where ProcessCommandLine has_any ('gh auth token', 'gcloud config config-helper', 'az account get-access-token', "azd auth token")
+   | where InitiatingProcessFileName in~ ("bun", "bun.exe")
+   | where InitiatingProcessFolderPath contains "bun-dl-" or InitiatingProcessCommandLine has "node_modules"

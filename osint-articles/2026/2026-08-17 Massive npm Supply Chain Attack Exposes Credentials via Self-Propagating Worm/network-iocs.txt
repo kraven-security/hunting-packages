@@ -1,0 +1,4 @@
+npm-cache.com
+pypi-get.com
+js-mirror.com
+https://npm-cache.com:443/router
