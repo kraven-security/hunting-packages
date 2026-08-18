@@ -1,0 +1,6 @@
+studiotikva.com
+api.studiotikva.com
+ns1.studiotikva.com
+ns2.studiotikva.com
+144.172.115.17
+144.172.104.82
