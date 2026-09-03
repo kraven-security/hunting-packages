@@ -1,0 +1,71 @@
+// Campaign payloads and loaders Surfaces execution or creation of the campaign’s stable stage-one, later-stage, persistent, networking, and loader binaries by SHA-256.
+let campaignSha256 = dynamic([
+  "676a2a7b94ca2f8ec76352ee656e4d075bb342bd7ad6efbc7c19c060001eace7", // stage-one
+  "6d6ba2bc9ad414837826f7278bc3e0116f1aeda02d0c2284ed65819f5d9180a8", // later-stage
+  "c4100ad39d8db98f063feb6c3b6c8e9a9f9d9bf25a1e0233f43b058ff8a7dbdf", // networking
+  "1bd3662d784840e410d2d3c0a1040277f7f549089447359f01e05c2559cb1f17", // persistent
+  "c6100166e2d3b40388980f7674712ef39e937ac04925ca5d370415399ed73faf", // TrueUpdate loader
+  "f33d160d757e4b39019fdef21cf90cafb501b800ca0d4039366bc30856e3d81b", // persistent/networking
+  "e4fe2dee8f0bb132fa15fc686d1f93df39530a2d3a8d3a1f3a605a057c04e7b3"  // supporting DLL
+]);
+union
+  (DeviceProcessEvents | where SHA256 in (campaignSha256)),
+  (DeviceFileEvents    | where SHA256 in (campaignSha256))
+| project Timestamp, DeviceName, ActionType, FileName, FolderPath, SHA256, InitiatingProcessFileName, InitiatingProcessCommandLine
+| order by Timestamp desc
+
+// Randomized payload drop pattern Finds executables dropped into randomized folders under world-writable or system locations — the campaign’s stable staging behavior regardless of filename.
+DeviceProcessEvents
+| where FolderPath matches regex @"(?i)^C:\\(Users\\Public|ProgramData|Program Files \(x86\))\\[A-Za-z0-9]{4,10}\\[A-Za-z0-9]{4,10}\.exe$"
+| where InitiatingProcessFileName in~ ("msiexec.exe","explorer.exe","svchost.exe","cmd.exe","7zFM.exe","360zip.exe","WinRAR.exe")
+| project Timestamp, DeviceName, AccountName, FolderPath, FileName, SHA256, InitiatingProcessFileName, InitiatingProcessCommandLine
+| order by Timestamp desc
+
+// Microsoft Defender exclusion tampering Detects the SYSTEM scheduled-task and PowerShell routines that write sweeping Microsoft Defender path exclusions.
+DeviceProcessEvents
+| where ProcessCommandLine has @"Windows Defender\Exclusions\Paths"
+     or ProcessCommandLine has "Add-MpPreference -ExclusionPath"
+     or (ProcessCommandLine has "SCHTASKS" and ProcessCommandLine has "SYSTEM" and ProcessCommandLine has "Exclusions")
+| project Timestamp, DeviceName, AccountName, InitiatingProcessFileName, ProcessCommandLine
+| order by Timestamp desc
+
+// Recovery inhibition and Windows Update neutralization Surfaces shadow-copy deletion and the routine that stops, disables, or renames Windows Update service components.
+DeviceProcessEvents
+| where ProcessCommandLine has "vssadmin delete shadows"
+     or (ProcessCommandLine has_all ("sc","config","disabled") and ProcessCommandLine has_any ("wuauserv","UsoSvc","uhssvc","WaaSMedicSvc"))
+     or ProcessCommandLine has "NoAutoUpdate"
+     or (ProcessCommandLine has "rename" and ProcessCommandLine has_any ("wuaueng","WaaSMedicSvc"))
+| project Timestamp, DeviceName, InitiatingProcessFileName, ProcessCommandLine
+| order by Timestamp desc
+
+// Windows Installer (msiexec) embedded-mode execution Catches the parallel delivery vector where msiexec launches a randomized payload from a world-writable path.
+DeviceProcessEvents
+| where InitiatingProcessFileName =~ "msiexec.exe"
+| where InitiatingProcessCommandLine has "-Embedding" and InitiatingProcessCommandLine has @"Global\MSI0000"
+| where FolderPath has @"C:\Users\Public\"
+| project Timestamp, DeviceName, FileName, FolderPath, SHA256, InitiatingProcessCommandLine
+| order by Timestamp desc
+
+// Disguised scheduled-task execution Flags payloads relaunched by the Task Scheduler service from user-writable directories (the ~60-second re-execution loop).
+DeviceProcessEvents
+| where InitiatingProcessCommandLine has "netsvcs" and InitiatingProcessCommandLine has "Schedule"
+| where FolderPath matches regex @"(?i)^C:\\(Users\\Public|ProgramData|Program Files \(x86\))\\"
+| where FileName endswith ".exe"
+| project Timestamp, DeviceName, FileName, FolderPath, SHA256, InitiatingProcessFileName
+| order by Timestamp desc
+
+// Command-and-control connections Matches callbacks to the campaign’s C2 IP:port set and six-character .net C2 domains.
+let c2ip    = dynamic(["202.95.14.237","47.239.232.245","161.248.87.157","103.156.25.35","103.183.3.162","43.99.100.248","47.239.175.163","47.86.205.97","47.243.218.255"]);
+let c2ports = dynamic([5090,7031,7032,7088,7089,7090,8050,28290,28300]);
+let c2dom   = dynamic(["iualef.net","euioxu.net","czijbh.net","wfmwsj.net","tbdqxq.net","oijfwe.net"]);
+DeviceNetworkEvents
+| where (RemoteIP in (c2ip) and RemotePort in (c2ports)) or (RemoteUrl has_any (c2dom))
+| project Timestamp, DeviceName, InitiatingProcessFileName, InitiatingProcessSHA256, RemoteIP, RemotePort, RemoteUrl, ActionType
+| order by Timestamp desc
+
+// Malicious delivery domains and download endpoints Identifies connections to the dedicated delivery domains and the /712down, /73inst, /7qinst, /ins711 download paths.
+let deliveryHosts = dynamic(["gehie246.com","yimxg25tiy.com","cc8ttkv35b.com","n7b8t85zsg.com","bxfh.tzcdq.cn","tmsq.tzcdq.cn","mebx78e02.com","qwjre1487.com"]);
+DeviceNetworkEvents
+| where RemoteUrl has_any (deliveryHosts) or RemoteUrl has_any ("/712down","/73inst","/7qinst","/ins711")
+| project Timestamp, DeviceName, InitiatingProcessFileName, RemoteUrl, RemoteIP, ActionType
+| order by Timestamp desc
