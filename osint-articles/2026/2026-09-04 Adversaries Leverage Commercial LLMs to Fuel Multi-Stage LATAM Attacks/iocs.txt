@@ -1,0 +1,17 @@
+
+m-doxa-apodo.duckdns.org
+m-doxa-geo.duckdns.org
+m-doxa-intel.duckdns.org
+m-doxa-repuve.duckdns.org
+m-doxa-sre.duckdns.org
+m-doxa-vacunas.duckdns.org
+178.128.87.160
+178.128.87.160
+165.22.184.26
+http://167.148.195.53:8888/socktz_v9.exe
+46ac289ce0c13666de616446f5d5a68da8bd150f4f065c3bec02f63776d3899c
+4e218e70afdbb116209ec0ebe8fc556e296e69648aa4e0425b83c0e863a8fee5
+7d766942ef34542cee39c852286599958c4c2e23187010c4d38dbf88fcb40bf8
+a38b2cf8beff32a276eed8783723ecf8cc53d7dc88669e1b998dddc4db6fe996
+87bf8bc8b4a2cf34f0af1afe161f123a3d200e77f6c6f41b81bf6ae66ee172ec
+
