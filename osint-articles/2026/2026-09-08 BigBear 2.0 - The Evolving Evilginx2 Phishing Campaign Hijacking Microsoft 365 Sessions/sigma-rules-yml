@@ -1,0 +1,108 @@
+```
+title: Evilginx BigBear Session Cookies
+id: 0b8d50f4-fc0f-4ef5-9001
+status: stable
+description: Detects known Evilginx and BigBear session cookies.
+logsource:
+  category: webserver
+detection:
+  selection:
+    http_cookie|contains:
+      - "evginx_session"
+      - "bigbear_session"
+      - "evginx_admin"
+  condition: selection
+falsepositives:
+  - Unknown
+level: high
+tags:
+  - attack.credential-access
+
+```
+title: Communication With Known Evilginx Infrastructure
+id: 0b8d50f4-fc0f-4ef5-9002
+status: experimental
+description: Detects outbound communication to known Evilginx infrastructure.
+logsource:
+  category: network_connection
+detection:
+  selection:
+    destination_ip:
+      - 130.94.82.180
+      - 70.34.208.46
+      - 130.94.113.184
+      - 78.141.193.59
+      - 64.176.72.180
+      - 38.54.124.58
+      - 208.85.18.18
+  condition: selection
+falsepositives:
+  - IP reassignment
+level: critical
+tags:
+  - attack.command-and-control
+
+```
+title: Evilginx Custom Headers
+id: 0b8d50f4-fc0f-4ef5-9003
+status: experimental
+description: Detects uncommon Evilginx-specific HTTP headers.
+logsource:
+  category: proxy
+detection:
+  selection:
+    http_headers|contains:
+      - "x-evg-"
+  condition: selection
+falsepositives:
+  - Unknown
+level: high
+tags:
+  - attack.credential-access
+
+```
+title: Telegram Credential Exfiltration
+id: 0b8d50f4-fc0f-4ef5-9004
+status: experimental
+logsource:
+  category: proxy
+detection:
+  telegram:
+    url|contains: "api.telegram.org"
+  methods:
+    url|contains:
+      - "/sendMessage"
+      - "/sendDocument"
+  secrets:
+    http_request_body|contains:
+      - "cookie"
+      - "session"
+      - "password"
+      - "credential"
+  condition: telegram and methods and 1 of secrets
+falsepositives:
+  - Approved Telegram automation
+level: critical
+tags:
+  - attack.exfiltration
+
+```
+title: Multiple Evilginx Indicators
+id: 0b8d50f4-fc0f-4ef5-9005
+status: stable
+logsource:
+  category: webserver
+detection:
+  cookies:
+    http_cookie|contains:
+      - "evginx_session"
+      - "bigbear_session"
+  headers:
+    http_headers|contains:
+      - "x-evg-"
+  condition: cookies and headers
+falsepositives:
+  - Unknown
+level: critical
+tags:
+  - attack.credential-access
