@@ -1,0 +1,74 @@
+// Hunt for automated pagination, delta, and search behavior. Identify actors walking large Graph result sets or repeatedly querying for data.
+GraphAPIAuditEvents 
+| where Timestamp > ago(24h) 
+| where toint(ResponseStatusCode) between (200 .. 299) 
+| extend Uri = tolower(RequestUri), 
+         ActorId = coalesce(AccountObjectId, 
+                            ServicePrincipalId, ApplicationId), 
+         Path = tostring(split(tolower(RequestUri), "?")[0]) 
+| where Uri has_any ("$top", "%24top", "$skip", "%24skip", 
+                     "$skiptoken", "%24skiptoken", "$count", 
+                     "%24count", "/delta", "/search") 
+| summarize AutomatedRequests=count(), DistinctPaths=dcount(Path), 
+            SampleUris=make_set(RequestUri, 12) 
+    by ActorId, IpAddress, ApplicationId, bin(Timestamp, 15m) 
+| where AutomatedRequests >= 8 and DistinctPaths >= 4 
+| order by AutomatedRequests desc
+
+// Hunt for reconnaissance progressing to content collection. Prioritize sessions where broad discovery and content retrieval occur together.
+GraphAPIAuditEvents 
+| where Timestamp > ago(24h) 
+| where toint(ResponseStatusCode) between (200 .. 299) 
+| extend Uri = tolower(RequestUri), 
+         ActorId = coalesce(AccountObjectId,
+                            ServicePrincipalId, ApplicationId) 
+| extend ActivityType = case( 
+    Uri has "/content" or Uri has "/attachments", "ContentCollection", 
+    Uri has "/users" or Uri has "/groups", "DirectoryRecon", 
+    Uri has "/directoryroles" or Uri has "/rolemanagement" 
+        or Uri has "/authentication/methods", "PrivilegeRecon", 
+    Uri has "/applications" or Uri has "/serviceprincipals", "ApplicationRecon", 
+    Uri has "/sites" or Uri has "/drives" or Uri has "/drive/", "RepositoryRecon", 
+    Uri has "/messages" or Uri has "/mailfolders", "MailboxRecon", 
+    "Other") 
+| where ActivityType != "Other" 
+| summarize DiscoveryFirst=minif(Timestamp, ActivityType != "ContentCollection"), 
+            CollectionFirst=minif(Timestamp, ActivityType == "ContentCollection"), 
+            DiscoveryCategories=dcountif(ActivityType, ActivityType != "ContentCollection"), 
+            ContentRequests=countif(ActivityType == "ContentCollection"), 
+            TotalResponseBytes=sum(coalesce(ResponseSize, 0)), 
+            SampleUris=make_set(RequestUri, 15) 
+    by ActorId, IpAddress, ApplicationId, bin(Timestamp, 1h) 
+| where isnotnull(DiscoveryFirst) and isnotnull(CollectionFirst) 
+| where CollectionFirst >= DiscoveryFirst 
+    and DiscoveryCategories >= 2 and ContentRequests >= 1 
+| order by CollectionFirst desc
+
+// Hunt for exfiltration through Microsoft Graph. Prioritize sessions where broad discovery and content retrieval occur together.
+GraphAPIAuditEvents 
+| where Timestamp > ago(24h) 
+| where toint(ResponseStatusCode) between (200 .. 299) 
+| extend Uri = tolower(RequestUri), 
+         ActorId = coalesce(AccountObjectId, 
+                            ServicePrincipalId, ApplicationId) 
+| extend ActivityType = case( 
+    Uri has "/content" or Uri has "/attachments", "ContentCollection", 
+    Uri has "/users" or Uri has "/groups", "DirectoryRecon", 
+    Uri has "/directoryroles" or Uri has "/rolemanagement" 
+        or Uri has "/authentication/methods", "PrivilegeRecon", 
+    Uri has "/applications" or Uri has "/serviceprincipals", "ApplicationRecon", 
+    Uri has "/sites" or Uri has "/drives" or Uri has "/drive/", "RepositoryRecon", 
+    Uri has "/messages" or Uri has "/mailfolders", "MailboxRecon", 
+    "Other") 
+| where ActivityType != "Other" 
+| summarize DiscoveryFirst=minif(Timestamp, ActivityType != "ContentCollection"), 
+            CollectionFirst=minif(Timestamp, ActivityType == "ContentCollection"), 
+            DiscoveryCategories=dcountif(ActivityType, ActivityType != "ContentCollection"), 
+            ContentRequests=countif(ActivityType == "ContentCollection"), 
+            TotalResponseBytes=sum(coalesce(ResponseSize, 0)), 
+            SampleUris=make_set(RequestUri, 15) 
+    by ActorId, IpAddress, ApplicationId, bin(Timestamp, 1h) 
+| where isnotnull(DiscoveryFirst) and isnotnull(CollectionFirst) 
+| where CollectionFirst >= DiscoveryFirst 
+    and DiscoveryCategories >= 2 and ContentRequests >= 1 
+| order by CollectionFirst desc
