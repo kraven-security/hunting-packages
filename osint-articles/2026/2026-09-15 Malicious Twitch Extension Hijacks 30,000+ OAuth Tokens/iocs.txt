@@ -1,0 +1,16 @@
+152.53.177.186
+132.243.113.25
+80.74.26.162
+enhanced.jeetbot.cc
+enhanced-1.jeetbot.cc
+ext-03.jeetbot.cc
+proxy.morphilina.me
+ext-styles.jeetbot.cc/api/v1/proxies
+ext-styles.jeetbot.cc/api/v1/forced-proxy
+api.jeetbot.cc/api/v2/public/extension_helper/
+img.drisnya.online
+enhanced.jeetbot.cc/set-token
+thebeholder-proxy.deno.dev/set-token
+proxy.thebeholder.deno.net/set-token
+e17e1e671b597da19b89c5b2d0fa821e90e627860e756ae4947ed27c035330a8
+141c35607dc0e8e400deb380126b3052bd0495b4d37c8dd979c6aa0204b142fc
