@@ -14,7 +14,7 @@ Key takeaways:
 
 **☑️ Recommendation 3**: Implement strict egress filtering and zero-trust network policies for all edge appliances to block unauthorized outbound TCP, UDP, and SMTP traffic at the perimeter.
 
-🔗 [Source](https://www.security.com/threat-intelligence/warlock-ransomware-critical-infrastructure)
+🔗 [Source](https://www.rapid7.com/blog/post/tr-smtp-is-the-key-bpfdoor-averat-hitting-the-network-edge/)
 
 ## Package Content
 
