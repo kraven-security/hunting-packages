@@ -1,0 +1,6 @@
+134.209.82.225
+134.209.82.225:22
+http://134.209.82.225:8099/beacon
+http://127.0.0.1:8099/beacon
+ifconfig.me
+https://api.ipify.org
