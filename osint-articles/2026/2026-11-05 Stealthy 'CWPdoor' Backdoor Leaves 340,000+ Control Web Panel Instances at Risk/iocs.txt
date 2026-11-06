@@ -1,0 +1,7 @@
+e505d4ffa21cf494a5dc2d7c8f4f1236 
+965aea67fb40de1bab5169ada993349f 
+d3f4e95113d49ab3991b45e457bda75b
+http://136.0.141.71/static/cwpsrv_update.sh
+http://136.0.141.71/static/cwpsrv_1.15.10
+http://136.0.141.71/static/cwpsrv_1.24.0
+136.0.141.71 

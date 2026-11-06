@@ -1,0 +1,4 @@
+http://136.0.141.71/static/cwpsrv_update.sh
+http://136.0.141.71/static/cwpsrv_1.15.10
+http://136.0.141.71/static/cwpsrv_1.24.0
+136.0.141.71 
