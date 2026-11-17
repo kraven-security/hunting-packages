@@ -18,7 +18,7 @@ Key takeaways:
 
 ## Package Content
 
-- `iocs.txt`: List of all Indicators of Compromise (IOCs) in the article. 
+- `iocs.txt`: List of all Indicators of Compromise (IOCs) in the article. All endpoint IOCs.
 - `yara-rules.yar`: List of YARA detection rules in the article.
 
 <br>
